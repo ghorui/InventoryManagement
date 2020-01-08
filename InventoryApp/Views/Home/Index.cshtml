@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Big Bazaar</h1>
+    <p class="lead">Company details to be shown here.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Dashboard</h2>
+            <p>
+                Dashboard to show existing inventory details.
+            </p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Shop dashboard &raquo;</a></p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Inventory &raquo;</a></p>
+            <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("About","Home")'">Something &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Purchase</h2>
+            <p>Record a purchase</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Purchase &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Sell</h2>
+            <p>Record a sell</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Sell &raquo;</a></p>
+        </div>
+    </div>
+}

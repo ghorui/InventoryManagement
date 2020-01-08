@@ -1,0 +1,58 @@
+﻿@model List<InventoryApp.Models.Shopping.Product>
+@{
+    ViewBag.Title = "ShopInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Shop Inventory</h2>
+
+<table>
+    <thead>Test</thead>
+    <tbody>
+        <tr>
+            <td>
+                ID
+            </td>
+            <td>
+                Name
+            </td>
+            <td>
+                Count
+            </td>
+            <td>
+                Cost Per Pc
+            </td>
+            <td>
+                Weight Per Pc
+            </td>
+        </tr>
+        @if (Model.Count > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.ID
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Count
+                    </td>
+                    <td>
+                        @item.CostPerPc
+                    </td>
+                    <td>
+                        @item.WeightPerPc
+                    </td>
+                </tr>
+            }
+        }
+        else{
+            <p>There is no product to display!</p>
+        }
+    </tbody>
+</table>
+
+
