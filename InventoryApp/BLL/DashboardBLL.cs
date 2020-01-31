@@ -14,5 +14,11 @@ namespace InventoryApp.BLL
             var dal = new DashboardDAL();
             return dal.GetAllProductsInTheShop();
         }
+
+        public List<Product> GetAllProductsInTheInventory()
+        {
+            var dal = new DashboardDAL();
+            return dal.GetAllProductsInTheInventory();
+        }
     }
 }

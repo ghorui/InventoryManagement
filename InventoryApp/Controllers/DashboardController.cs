@@ -13,8 +13,19 @@ namespace InventoryApp.Controllers
         // GET: Dashboard
         public ActionResult ShopInventory()
         {
+            if (true) //role check
+            {
+
+            }
             var dashboardBLL = new DashboardBLL();
             List<Product> productsInShop = dashboardBLL.GetAllProductsInTheShop();
+            return View(productsInShop);
+        }
+
+        public ActionResult StorageInventory()
+        {
+            var dashboardBLL = new DashboardBLL();
+            List<Product> productsInShop = dashboardBLL.GetAllProductsInTheInventory();
             return View(productsInShop);
         }
     }
