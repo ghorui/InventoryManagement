@@ -79,47 +79,17 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("HOME", "Index", "Home")</li>
-                    <li>@Html.ActionLink("ABOUT", "Index", "Home")</li>
-                    <li>@Html.ActionLink("TEAM", "Index", "Home")</li>
-                    <li>@Html.ActionLink("SERVICE", "Index", "Home")</li>
-                    <li>@Html.ActionLink("PORTFOLIO", "Index", "Home")</li>
-                    <li>@Html.ActionLink("CONTACT", "Index", "Home")</li>
+                    <li>@Html.ActionLink("ABOUT", "About", "Home")</li>
+                    <li>@Html.ActionLink("TEAM", "Team", "Home")</li>
+                    <li>@Html.ActionLink("SERVICE", "Service", "Home")</li>
+                    <li>@Html.ActionLink("PORTFOLIO", "Portfolio", "Home")</li>
+                    <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
                     @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
     </nav>
 
-    @*OLD Section*@
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Big Bazaar", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>*@
-    @*<div>
-        <nav>
-            <ul id="menu">
-                <li>@Html.ActionLink("Home", "Index", "Home")
-                    <ul>
-                        <li>@Html.ActionLink("subItem1", "SubItemOne", "Home")</li>
-                        <li>@Html.ActionLink("subItem2", "SubItemTwo", "Home")</li>
-                    </ul>
-                </li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            </ul>
-        </nav>
-    </div>*@
     <div id="home" class="container body-content">
         @RenderBody()
 

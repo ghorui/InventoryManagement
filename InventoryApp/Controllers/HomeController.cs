@@ -26,5 +26,26 @@ namespace InventoryApp.Controllers
 
             return View();
         }
+
+        public ActionResult Team()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult Service()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult Portfolio()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }

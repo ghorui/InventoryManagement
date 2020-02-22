@@ -296,6 +296,9 @@
     <Content Include="Views\Shop\Sell.cshtml" />
     <Content Include="Views\Shared\SellFromShop.cshtml" />
     <Content Include="Views\Billing\Index.cshtml" />
+    <Content Include="Views\Home\Team.cshtml" />
+    <Content Include="Views\Home\Service.cshtml" />
+    <Content Include="Views\Home\Portfolio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
