@@ -12,20 +12,16 @@ namespace InventoryApp.Controllers
     public class BillingController : Controller
     {
         // GET: Billing
-        public ActionResult Index(BillingDTO billingDto)
+        public JsonResult Index(BillingDTO billingDto)
         {
             billingDto.LastUpdatedUser = User.Identity.GetUserName();
             long res = 0;
-            BillingDTO result = null;
             if (billingDto.TransactionId == 0)
             {
                 res = SellFromShopBLL.SellProduct(billingDto);
             }
-            if (res > 0)
-            {
-                result = SellFromShopBLL.GetBillingDetailsByTransationId(res);
-            }
-            return View(result);
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Print(long transationId)
