@@ -8,29 +8,36 @@ namespace InventoryApp.Models.Shopping
 {
     public class Product
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Count { get; set; }
-        public decimal CostPerPc { get; set; }
-        public string WeightPerPc { get; set; }
-        public string LastPurchaseId { get; set; }
-        public string LastSellId { get; set; }
-        public string LastUpdatedUser { get; set; }
-        public DateTime LastUpdatedTime { get; set; }
+        public string BarCode { get; set; }
+        public string ItemName { get; set; }
+        public int Quantity { get; set; }
+        public float UnitPrice { get; set; }
+        public float Value { get; set; }
+        public float ItemDiscountPercentage { get; set; }
+        public float ItemDiscountAmount { get; set; }
+        public float TaxableValue { get; set; }
+        public int BillingTransactionId { get; set; }  
 
         public static Product Create(IDataRecord record)
         {
-            Product product = new Product();
-
-            product.Id = Convert.ToInt32(record["Id"].ToString());
-            product.Name = record["Name"].ToString();
-            product.Count = Convert.ToInt32(record["Count"].ToString());
-            product.CostPerPc = Convert.ToDecimal(record["CostPerPc"].ToString());
-            product.WeightPerPc = record["WeightPerPc"].ToString();
-            product.LastPurchaseId = record["LastPurchaseId"].ToString();
-            product.LastSellId = record["LastSellId"].ToString();
-            product.LastUpdatedUser = record["LastUpdatedUser"].ToString();
-            product.LastUpdatedTime = DateTime.Now;
+            float.TryParse(record["UnitPrice"].ToString(), out var unitPrice);
+            float.TryParse(record["Value"].ToString(), out var value);
+            float.TryParse(record["ItemDiscountPercentage"].ToString(), out var itemDiscountPercentage);
+            float.TryParse(record["ItemDiscountAmount"].ToString(), out var itemDiscountAmount);
+            float.TryParse(record["TaxableValue"].ToString(), out var taxableValue);
+            Product product = new Product
+            {
+                BarCode = record["BarCode"].ToString(),
+                ItemName = record["ItemName"].ToString(),
+                Quantity = Convert.ToInt32(record["Quantity"].ToString()),
+                UnitPrice = unitPrice,
+                Value = value,
+                ItemDiscountPercentage = itemDiscountPercentage,
+                ItemDiscountAmount = itemDiscountAmount,
+                TaxableValue = taxableValue,
+                BillingTransactionId = Convert.ToInt32( record["BillingTransactionId"].ToString())
+            };
+            
 
             return product;
 
