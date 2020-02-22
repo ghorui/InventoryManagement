@@ -20,40 +20,40 @@
             </div>
         </div>
     </div>
-</section>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Dashboard</h2>
-            <p>
-                Dashboard to show existing inventory details.
-            </p>
-            <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("ShopInventory","Dashboard")'">Shop dashboard &raquo;</a></p>
-            <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory","Dashboard")'">Inventory &raquo;</a></p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Dashboard</h2>
+                <p>
+                    Dashboard to show existing inventory details.
+                </p>
+                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("ShopInventory","Dashboard")'">Shop dashboard &raquo;</a></p>
+                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory","Dashboard")'">Inventory &raquo;</a></p>
+            </div>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("SalesAgent"))
+            {
+                <div class="col-md-4">
+                    <h2>Showroom</h2>
+                    <p>Incoming and outgoing product in the <b>Shop</b></p>
+                    <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("ShopInventory", "Dashboard")'">Product Coming in Shop &raquo;</a></p>
+                    <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("Sell", "Shop")'">Sell product from Shop &raquo;</a></p>
+                </div>
+            }
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("InventoryAgent"))
+            {
+                <div class="col-md-4">
+                    <h2>Godown</h2>
+                    <p>Incoming and outgoing product in the <b>Godown</b></p>
+
+                    <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory", "Dashboard")'">Product coming in Inventory &raquo;</a></p>
+                    <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory", "Dashboard")'">Send product from Inventory &raquo;</a></p>
+                </div>
+            }
+
         </div>
-
-        @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("SalesAgent"))
-        {
-            <div class="col-md-4">
-                <h2>Showroom</h2>
-                <p>Incoming and outgoing product in the <b>Shop</b></p>
-                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("ShopInventory", "Dashboard")'">Product Coming in Shop &raquo;</a></p>
-                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("Sell", "Shop")'">Sell product from Shop &raquo;</a></p>
-            </div>
-        }
-
-        @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("InventoryAgent"))
-        {
-            <div class="col-md-4">
-                <h2>Godown</h2>
-                <p>Incoming and outgoing product in the <b>Godown</b></p>
-
-                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory", "Dashboard")'">Product coming in Inventory &raquo;</a></p>
-                <p><a class="btn btn-default" href="#" onclick="location.href='@Url.Action("StorageInventory", "Dashboard")'">Send product from Inventory &raquo;</a></p>
-            </div>
-        }
-
-    </div>
-}
+    }
+</section>

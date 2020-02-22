@@ -1,3 +1,6 @@
 InventoryApp/bin/
 packages/
 InventoryApp/Scripts/
+.vs/
+InventoryApp/obj/
+InventoryApp/obj/Debug/InventoryApp.csprojAssemblyReference.cache

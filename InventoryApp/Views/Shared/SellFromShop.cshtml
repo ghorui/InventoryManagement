@@ -136,78 +136,83 @@
 <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 <script type="text/javascript">
 
-    $("body").on("click", "#btnAdd", function () {
-        //Reference the Name and Country TextBoxes.
-        debugger
-        var txtBarCode = $("#txtBarCode");
-        var txtItemName = $("#txtItemName");
-        var txtQuantity = $("#txtQuantity");
-        var txtUnitPrice = $("#txtUnitPrice");
-        var txtAmount = $("#txtAmount");
-        var txtItemDiscountPercentage = $("#txtItemDiscountPercentage");
-        var txtItemDiscountAmount = $("#txtItemDiscountAmount");
-        var txtTaxableValue = $("#txtTaxableValue");
-        var amount = txtQuantity[0].value * txtUnitPrice[0].value;
+    $("body").on("click",
+        "#btnAdd",
+        function () {
+            //Reference the Name and Country TextBoxes.
+            debugger
+            var txtBarCode = $("#txtBarCode");
+            var txtItemName = $("#txtItemName");
+            var txtQuantity = $("#txtQuantity");
+            var txtUnitPrice = $("#txtUnitPrice");
+            var txtAmount = $("#txtAmount");
+            var txtItemDiscountPercentage = $("#txtItemDiscountPercentage");
+            var txtItemDiscountAmount = $("#txtItemDiscountAmount");
+            var txtTaxableValue = $("#txtTaxableValue");
+            var amount = txtQuantity[0].value * txtUnitPrice[0].value;
 
-        //$("#txtAmount").val = txtAmount;
+            //$("#txtAmount").val = txtAmount;
 
-        //Get the reference of the Table's TBODY element.
-        var tBody = $("#tblProductToSell > TBODY")[0];
+            if (txtBarCode.val() !== "" && amount !== 0) {
 
-        //Add Row.
-        var row = tBody.insertRow(-1);
+                //Get the reference of the Table's TBODY element.
+                var tBody = $("#tblProductToSell > TBODY")[0];
 
-        //Add Name cell.
-        var cell = $(row.insertCell(-1));
-        cell.html(txtBarCode.val());
+                //Add Row.
+                var row = tBody.insertRow(-1);
 
-        //Add Country cell.
-        cell = $(row.insertCell(-1));
-        cell.html(txtItemName.val());
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtBarCode.val());
 
-        //Add Name cell.
-        var cell = $(row.insertCell(-1));
-        cell.html(txtQuantity.val());
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtItemName.val());
 
-        //Add Country cell.
-        cell = $(row.insertCell(-1));
-        cell.html(txtUnitPrice.val());
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtQuantity.val());
 
-        //Add Country cell.
-        cell = $(row.insertCell(-1));
-        cell.html(amount);
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtUnitPrice.val());
 
-        //Add Name cell.
-        var cell = $(row.insertCell(-1));
-        cell.html(txtItemDiscountPercentage.val());
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(amount);
 
-        //Add Country cell.
-        cell = $(row.insertCell(-1));
-        cell.html(txtItemDiscountAmount.val());
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtItemDiscountPercentage.val());
 
-        //Add Country cell.
-        cell = $(row.insertCell(-1));
-        cell.html(txtTaxableValue.val());
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtItemDiscountAmount.val());
 
-        //Add Button cell.
-        cell = $(row.insertCell(-1));
-        var btnRemove = $("<input />");
-        btnRemove.attr("type", "button");
-        btnRemove.attr("onclick", "Remove(this);");
-        btnRemove.val("Remove");
-        cell.append(btnRemove);
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtTaxableValue.val());
 
-        //Clear the TextBoxes.
-        txtBarCode.val("");
-        txtItemName.val("");
-        txtQuantity.val("");
-        txtUnitPrice.val("");
-        txtAmount.val("");
-        txtItemDiscountPercentage.val("0");
-        txtItemDiscountAmount.val("");
-        txtTaxableValue.val("");
-        UpdateSum();
-    });
+                //Add Button cell.
+                cell = $(row.insertCell(-1));
+                var btnRemove = $("<input />");
+                btnRemove.attr("type", "button");
+                btnRemove.attr("onclick", "Remove(this);");
+                btnRemove.val("Remove");
+                cell.append(btnRemove);
+
+                //Clear the TextBoxes.
+                txtBarCode.val("");
+                txtItemName.val("");
+                txtQuantity.val("");
+                txtUnitPrice.val("");
+                txtAmount.val("");
+                txtItemDiscountPercentage.val("0");
+                txtItemDiscountAmount.val("");
+                txtTaxableValue.val("");
+                UpdateSum();
+            }
+        });
 
     function UpdateSum() {
         debugger
@@ -273,8 +278,8 @@
     };
 
     function GetData(e) {
-        if (e.key == "Enter") {
-            debugger
+        if (e.key === "Enter") {
+            debugger;
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
             var txtQuantity = $("#txtQuantity");
@@ -288,12 +293,14 @@
                 dataType: "json",
                 success: function (data, status) {
                     //alert("GET /Shop/GetProductByBarCode?barCode. status:" + status);
-                    txtItemName.val(data.ItemName);
-                    txtQuantity.val(data.Quantity);
-                    txtUnitPrice.val(data.UnitPrice);
-                    txtAmount.val(data.Value);
+                    debugger;
+                    txtItemName.val(data[0].ItemName);
+                    txtQuantity.val(data[0].Quantity);
+                    txtUnitPrice.val(data[0].UnitPrice);
+                    txtAmount.val(data[0].Quantity * data[0].UnitPrice);
                 },
                 error: function (ex) {
+                    debugger;
                     alert("Error!" + ex);
                 }
             });
@@ -316,6 +323,7 @@
     }
 
     $("body").on("click", "#btnSave", function () {
+        debugger;
         //Loop through the Table rows and build a JSON array.
         var BillingDTO = {};
         var products = new Array();

@@ -59,7 +59,8 @@ namespace InventoryApp.Controllers
         [HttpGet]
         public JsonResult GetProductByBarCode(string barCode)
         {
-            return Json(SellFromShopBLL.GetProductByBarCode(barCode));
+            var response = Json(SellFromShopBLL.GetProductByBarCode(barCode), JsonRequestBehavior.AllowGet);
+            return response;
         }
     }
 }
