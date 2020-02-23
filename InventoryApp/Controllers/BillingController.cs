@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using InventoryApp.BLL;
+using InventoryApp.Models.BarCode;
 using InventoryApp.Models.Shopping;
 using Microsoft.AspNet.Identity;
 
@@ -38,6 +39,12 @@ namespace InventoryApp.Controllers
         public JsonResult GetCustomerDetailsByTransactionId(string transactionId)
         {
             return Json("{\"Name\": \"Tarun\",\"Phone\":\"9836916672\"}");
+        }
+
+        public JsonResult GetAllBarCodeInfo()
+        {
+            var barCodeInfo = new BarCodeInfo();
+            return Json(barCodeInfo, JsonRequestBehavior.AllowGet);
         }
     }
 }

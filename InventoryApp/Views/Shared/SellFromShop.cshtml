@@ -140,7 +140,6 @@
         "#btnAdd",
         function () {
             //Reference the Name and Country TextBoxes.
-            debugger
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
             var txtQuantity = $("#txtQuantity");
@@ -215,7 +214,6 @@
         });
 
     function UpdateSum() {
-        debugger
         var txtTotalAmount = $("#txtTotalAmount");
         var txtDiscountRate = $("#txtDiscountRate");
         var txtCGST = $("#txtCGST");
@@ -279,7 +277,6 @@
 
     function GetData(e) {
         if (e.key === "Enter") {
-            debugger;
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
             var txtQuantity = $("#txtQuantity");
@@ -293,14 +290,12 @@
                 dataType: "json",
                 success: function (data, status) {
                     //alert("GET /Shop/GetProductByBarCode?barCode. status:" + status);
-                    debugger;
                     txtItemName.val(data[0].ItemName);
                     txtQuantity.val(data[0].Quantity);
                     txtUnitPrice.val(data[0].UnitPrice);
                     txtAmount.val(data[0].Quantity * data[0].UnitPrice);
                 },
                 error: function (ex) {
-                    debugger;
                     alert("Error!" + ex);
                 }
             });
@@ -323,7 +318,6 @@
     }
 
     $("body").on("click", "#btnSave", function () {
-        debugger;
         //Loop through the Table rows and build a JSON array.
         var BillingDTO = {};
         var products = new Array();
@@ -364,7 +358,6 @@
         });
 
         BillingDTO.Products = products;
-        debugger;
         var req = JSON.stringify(BillingDTO);
 
         //Send the JSON array to Controller using AJAX.
@@ -375,7 +368,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (r) {
-                debugger;
                 alert(r + " record(s) inserted.");
             }
         });

@@ -1,0 +1,384 @@
+﻿
+@model IEnumerable<InventoryApp.Models.Shopping.SellingProduct>
+
+@{
+    Layout = null;
+}
+
+<div style="color: aqua; background-color: darkcyan">
+    <table id="tblProductToSell" style="color: black" width="40" class="col-md-7 table table-striped" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th>BarCode</th>
+                <th>ItemName</th>
+                <th>Quantity</th>
+                <th>Rate Per Unit</th>
+                <th>Value (Rs.)</th>
+                <th>Discount Percentage</th>
+                <th>Discount Amount</th>
+                <th>Taxable Value</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.BarCode</td>
+                    <td>@product.ItemName</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.UnitPrice</td>
+                    <td>@product.Value</td>
+                    <td>@product.DiscountPercentage</td>
+                    <td>@product.DiscountAmount</td>
+                    <td>@product.TaxableValue</td>
+                    <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><input type="text" onkeypress="GetData(event)" id="txtBarCode" /></td>
+                <td><input type="text" id="txtItemName" /></td>
+                <td><input type="text" onblur="UpdateAmount()" id="txtQuantity" /></td>
+                <td><input type="text" onblur="UpdateAmount()" id="txtUnitPrice" /></td>
+                <td><input type="text" disabled="disabled" id="txtAmount" /></td>
+                <td><input type="text" value="0" onblur="UpdateAmount()" id="txtItemDiscountPercentage" /></td>
+                <td><input type="text" disabled="disabled" onblur="UpdateAmount()" id="txtItemDiscountAmount" /></td>
+                <td><input type="text" disabled="disabled" onblur="UpdateAmount()" id="txtTaxableValue" /></td>
+                <td><input type="button" id="btnAdd" value="Add" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><label>Total</label></td>
+                <td><input type="text" disabled="disabled" id="txtTotalAmount" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Discount (%)</td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="0" id="txtDiscountRate" /></td>
+                <td><input type="text" disabled="disabled" id="txtDiscountAmount" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>CGST (%)</td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="6" id="txtCGST" /></td>
+                <td><input type="text" disabled="disabled" id="txtCGSTAmount" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>SGST (%)</td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="6" id="txtSGST" /></td>
+                <td><input type="text" disabled="disabled" id="txtSGSTAmount" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>IGST (%)</td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="12" id="txtIGST" /></td>
+                <td><input type="text" disabled="disabled" id="txtIGSTAmount" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Additional Charges (Rs.)</td>
+                <td></td>
+                <td><input type="text" value="0" onkeypress="UpdateSum()" onblur="UpdateSum()" id="txtAdditionalCharges" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2">Grand Total</td>
+                <td><input type="text" disabled="disabled" id="txtGrandTotal" /></td>
+                <td><label id="lblRoundOff">Test</label></td>
+            </tr>
+        </tfoot>
+
+    </table>
+</div>
+<hr />
+
+<hr />
+<input type="button" id="btnSave" value="Save All" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+<script type="text/javascript">
+
+    $("body").on("click",
+        "#btnAdd",
+        function () {
+            //Reference the Name and Country TextBoxes.
+            debugger
+            var txtBarCode = $("#txtBarCode");
+            var txtItemName = $("#txtItemName");
+            var txtQuantity = $("#txtQuantity");
+            var txtUnitPrice = $("#txtUnitPrice");
+            var txtAmount = $("#txtAmount");
+            var txtItemDiscountPercentage = $("#txtItemDiscountPercentage");
+            var txtItemDiscountAmount = $("#txtItemDiscountAmount");
+            var txtTaxableValue = $("#txtTaxableValue");
+            var amount = txtQuantity[0].value * txtUnitPrice[0].value;
+
+            //$("#txtAmount").val = txtAmount;
+
+            if (txtBarCode.val() !== "" && amount !== 0) {
+
+                //Get the reference of the Table's TBODY element.
+                var tBody = $("#tblProductToSell > TBODY")[0];
+
+                //Add Row.
+                var row = tBody.insertRow(-1);
+
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtBarCode.val());
+
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtItemName.val());
+
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtQuantity.val());
+
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtUnitPrice.val());
+
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(amount);
+
+                //Add Name cell.
+                var cell = $(row.insertCell(-1));
+                cell.html(txtItemDiscountPercentage.val());
+
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtItemDiscountAmount.val());
+
+                //Add Country cell.
+                cell = $(row.insertCell(-1));
+                cell.html(txtTaxableValue.val());
+
+                //Add Button cell.
+                cell = $(row.insertCell(-1));
+                var btnRemove = $("<input />");
+                btnRemove.attr("type", "button");
+                btnRemove.attr("onclick", "Remove(this);");
+                btnRemove.val("Remove");
+                cell.append(btnRemove);
+
+                //Clear the TextBoxes.
+                txtBarCode.val("");
+                txtItemName.val("");
+                txtQuantity.val("");
+                txtUnitPrice.val("");
+                txtAmount.val("");
+                txtItemDiscountPercentage.val("0");
+                txtItemDiscountAmount.val("");
+                txtTaxableValue.val("");
+                UpdateSum();
+            }
+        });
+
+    function UpdateSum() {
+        debugger
+        var txtTotalAmount = $("#txtTotalAmount");
+        var txtDiscountRate = $("#txtDiscountRate");
+        var txtCGST = $("#txtCGST");
+        var txtSGST = $("#txtSGST");
+        var txtIGST = $("#txtIGST");
+        var txtDiscountAmount = $("#txtDiscountAmount");
+        var txtCGSTAmount = $("#txtCGSTAmount");
+        var txtSGSTAmount = $("#txtSGSTAmount");
+        var txtIGSTAmount = $("#txtIGSTAmount");
+        var txtAdditionalCharges = $("#txtAdditionalCharges");
+        var txtGrandTotal = $("#txtGrandTotal");
+
+        var tBody = $("#tblProductToSell > TBODY")[0];
+        var TotalAmountWithItemDiscount = 0;
+        var TotalAmountWithoutItemDiscount = 0;
+        var TotalItemSpDiscount = 0;
+        for (var i = 0; i < tBody.rows.length; i++) {
+            var price = parseFloat(tBody.rows[i].cells[4].innerText);
+            var discountedPrice = parseFloat(tBody.rows[i].cells[7].innerText);
+            if (price > discountedPrice) {
+                TotalAmountWithItemDiscount += parseFloat(discountedPrice);
+                TotalItemSpDiscount += parseFloat(tBody.rows[i].cells[6].innerText);
+            }
+            else {
+                TotalAmountWithoutItemDiscount += price;
+            }
+        }
+        var TotalAmount = TotalAmountWithItemDiscount + TotalAmountWithoutItemDiscount;
+        txtTotalAmount.val(TotalAmount);
+        var totalDiscount = parseFloat((TotalAmountWithoutItemDiscount * parseFloat(txtDiscountRate.val()) / 100).toFixed(2));
+        txtDiscountAmount.val(totalDiscount);
+        var TotalAmountAfterDiscount = TotalAmount - totalDiscount;
+        var totalCGST = (TotalAmountAfterDiscount * txtCGST.val() / 100).toFixed(2);
+        txtCGSTAmount.val(totalCGST);
+        var totalSGST = (TotalAmountAfterDiscount * txtSGST.val() / 100).toFixed(2);
+        txtSGSTAmount.val(totalSGST);
+        var totalIGST = (TotalAmountAfterDiscount * txtIGST.val() / 100).toFixed(2);
+        txtIGSTAmount.val(totalIGST);
+        var TotalAmountAfterGST = (parseFloat(TotalAmountAfterDiscount) + parseFloat(totalCGST) + parseFloat(totalSGST) + parseFloat(totalIGST) + parseFloat(txtAdditionalCharges.val())).toFixed(2);
+        var roundedOff = Math.round(TotalAmountAfterGST);
+        if ((roundedOff - TotalAmountAfterGST) != 0) {
+            var lblRoundOff = $("#lblRoundOff");
+            lblRoundOff.val("Rounded off: " + (roundedOff - TotalAmountAfterGST));
+        }
+        txtGrandTotal.val(roundedOff);
+    }
+
+    function Remove(button) {
+        //Determine the reference of the Row using the Button.
+        var row = $(button).closest("TR");
+        var name = $("TD", row).eq(0).html();
+        if (confirm("Do you want to delete: " + name)) {
+            //Get the reference of the Table.
+            var table = $("#tblProductToSell")[0];
+
+            //Delete the Table row using it's Index.
+            table.deleteRow(row[0].rowIndex);
+            UpdateSum();
+        }
+    };
+
+    function GetData(e) {
+        if (e.key === "Enter") {
+            debugger;
+            var txtBarCode = $("#txtBarCode");
+            var txtItemName = $("#txtItemName");
+            var txtQuantity = $("#txtQuantity");
+            var txtUnitPrice = $("#txtUnitPrice");
+            var txtAmount = $("#txtAmount");
+
+            $.ajax({
+                type: "GET",
+                url: "/Shop/GetProductByBarCode?barCode=" + txtBarCode[0].value,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data, status) {
+                    //alert("GET /Shop/GetProductByBarCode?barCode. status:" + status);
+                    debugger;
+                    txtItemName.val(data[0].ItemName);
+                    txtQuantity.val(data[0].Quantity);
+                    txtUnitPrice.val(data[0].UnitPrice);
+                    txtAmount.val(data[0].Quantity * data[0].UnitPrice);
+                },
+                error: function (ex) {
+                    debugger;
+                    alert("Error!" + ex);
+                }
+            });
+        }
+    }
+
+    function UpdateAmount() {
+        var txtQuantity = $("#txtQuantity");
+        var txtUnitPrice = $("#txtUnitPrice");
+        var txtAmount = $("#txtAmount");
+        var txtItemDiscountPercentage = $("#txtItemDiscountPercentage");
+        var txtItemDiscountAmount = $("#txtItemDiscountAmount");
+        var txtTaxableValue = $("#txtTaxableValue");
+        var Amount = txtQuantity.val() * txtUnitPrice.val();
+        txtAmount.val(Amount);
+        var totalItemDiscount = (txtAmount.val() * txtItemDiscountPercentage.val() / 100).toFixed(2);
+        txtItemDiscountAmount.val(totalItemDiscount);
+        var itemTaxableValue = Amount - totalItemDiscount;
+        txtTaxableValue.val(itemTaxableValue);
+    }
+
+    $("body").on("click", "#btnSave", function () {
+        debugger;
+        //Loop through the Table rows and build a JSON array.
+        var BillingDTO = {};
+        var products = new Array();
+        var txtDiscountRate = $("#txtDiscountRate");
+        var txtCGST = $("#txtCGST");
+        var txtSGST = $("#txtSGST");
+        var txtIGST = $("#txtIGST");
+        var txtCGSTAmount = $("#txtCGSTAmount");
+        var txtSGSTAmount = $("#txtSGSTAmount");
+        var txtIGSTAmount = $("#txtIGSTAmount");
+        var txtTotalAmount = $("#txtTotalAmount");
+        var txtDiscountAmount = $("#txtDiscountAmount");
+        var txtGrandTotal = $("#txtGrandTotal");
+        var txtAdditionalCharges = $("#txtAdditionalCharges");
+        BillingDTO.OverallDiscountRate = txtDiscountRate.val();
+        BillingDTO.OverallDiscountAmount = txtDiscountAmount.val();
+        BillingDTO.CGSTRate = txtCGST.val();
+        BillingDTO.SGSTRate = txtSGST.val();
+        BillingDTO.IGSTRate = txtIGST.val();
+        BillingDTO.CGSTAmount = txtCGSTAmount.val();
+        BillingDTO.SGSTAmount = txtSGSTAmount.val();
+        BillingDTO.IGSTAmount = txtIGSTAmount.val();
+        BillingDTO.TotalAmount = txtTotalAmount.val();
+        BillingDTO.GrandTotal = txtGrandTotal.val();
+        BillingDTO.AdditionalCharges = txtAdditionalCharges.val();
+        $("#tblProductToSell TBODY TR").each(function () {
+            var row = $(this);
+            var product = {};
+            product.BarCode = row.find("TD").eq(0).html();
+            product.ItemName = row.find("TD").eq(1).html();
+            product.Quantity = row.find("TD").eq(2).html();
+            product.UnitPrice = row.find("TD").eq(3).html();
+            product.Value = row.find("TD").eq(4).html();
+            product.ItemDiscountPercentage = row.find("TD").eq(5).html();
+            product.ItemDiscountAmount = row.find("TD").eq(6).html();
+            product.TaxableValue = row.find("TD").eq(7).html();
+            products.push(product);
+        });
+
+        BillingDTO.Products = products;
+        debugger;
+        var req = JSON.stringify(BillingDTO);
+
+        //Send the JSON array to Controller using AJAX.
+        $.ajax({
+            type: "POST",
+            url: "/Billing/Index",
+            data: JSON.stringify(BillingDTO),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                debugger;
+                alert(r + " record(s) inserted.");
+            }
+        });
+    });
+</script>
+

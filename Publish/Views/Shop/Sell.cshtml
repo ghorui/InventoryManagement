@@ -1,0 +1,75 @@
+﻿@model InventoryApp.Models.Customer
+@{
+    ViewBag.Title = "Sell";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sell</h2>
+
+<div>
+    @using (Html.BeginForm("Sell", "Shop", FormMethod.Post))
+    {
+        <div style="color: black">
+            Customer Mobile Number: @Html.TextBoxFor(t => t.MobileNumber)
+            <button type="submit" class="btn btn-default" href="#" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'">Get Customer Details &raquo;</button>
+            @if (Model != null)
+            {
+                if (Model.Id == 0)
+                {
+                    <p><label class="label" style="color:red"> @ViewData["message"] !!</label></p>
+                }
+            }
+        </div>
+    }
+    @using (Html.BeginForm("Sell", "Shop", FormMethod.Post))
+    {
+        <div>
+            <table style="background-color: azure; text-decoration-color: black; color: black" class="table table-bordered table-striped">
+                <tr>
+                    <td>
+                        Mobile Number:
+                    </td>
+                    <td>
+                        @if (Model.MobileNumber != null)
+                        {
+                            @Html.TextBoxFor(t => t.MobileNumber, new { @readonly = "readonly" })
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(t => t.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Address:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(t => t.Address)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Email:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(t => t.Email)
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-default" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'">Save Customer Details &raquo;</button>
+        </div>
+    }
+    @if (Model.Id != 0)
+    {
+        <div style="width: inherit">
+            @Html.Partial("SellFromShop", Model.GetSellingProducts())
+        </div>
+    }
+</div>
+
+

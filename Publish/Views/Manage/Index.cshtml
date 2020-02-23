@@ -1,0 +1,51 @@
+﻿@model InventoryApp.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Create", "SetPassword")
+            }
+            ]
+        </dd>
+    </dl>
+    <hr />
+</div>
+<div>
+    <h4>User Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name:</dt>
+        <dd>
+            @Model.UserDetails.Name
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>FB:</dt>
+        <dd>
+            @Model.UserDetails.FacebookPage
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Address:</dt>
+        <dd>
+            @Model.UserDetails.Address
+        </dd>
+    </dl>
+</div>
+

@@ -1,0 +1,132 @@
+﻿@model InventoryApp.Models.Shopping.BillingDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>Detailed Bill</h4>
+    <hr/>
+    <div>
+        Name: <input type="text" disabled="disabled" id="txtCustomerName"/> Phone Number: <input type="text" disabled="disabled" id="txtCustomerPhone" />
+    </div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OverallDiscountRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OverallDiscountRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OverallDiscountAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OverallDiscountAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CGSTRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CGSTRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SGSTRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SGSTRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IGSTRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IGSTRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdditionalCharges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalCharges)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GrandTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GrandTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <input type="button" id="btnPayment" value="Payment Done" />
+    <input type="button" id="btnSave" onclick="@Html.ActionLink("Save All" ,"Print",@Model.TransactionId)" value="Save All" />
+</p>
+
+<script type="text/javascript">
+    $("body").on("click",
+        "#btnPayment",
+        function () {
+
+            $.ajax({
+                type: "GET",
+                url: "/Shop/GetProductByBarCode?transationId=" +@Model.TransactionId ,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data, status) {
+                    debugger;
+                    var res = data;
+                    alert(res);
+                },
+                error: function(ex) {
+                    alert("Error!" + ex);
+                }
+            });
+        });
+
+    $.ajax({
+        type: "GET",
+        url: "/Billing/GetCustomerDetailsByTransactionId?transationId=" +@Model.TransactionId ,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data, status) {
+            debugger;
+            var res = data;
+            alert(res);
+        },
+        error: function(ex) {
+            alert("Error!" + ex);
+        }
+    });
+</script>
