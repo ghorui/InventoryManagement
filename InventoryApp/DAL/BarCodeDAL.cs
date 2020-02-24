@@ -100,6 +100,8 @@ namespace InventoryApp.DAL
                 connection.Open();
                 string cmdText = DBConstants.usp_saveBarCodeProperties;
                 SqlCommand sqlCommand = new SqlCommand(cmdText, connection) { CommandType = CommandType.StoredProcedure };
+                sqlCommand.Parameters.AddWithValue("@item", item);
+                sqlCommand.Parameters.AddWithValue("@itemValue", value);
                 sqlCommand.ExecuteNonQuery();
             }
         }

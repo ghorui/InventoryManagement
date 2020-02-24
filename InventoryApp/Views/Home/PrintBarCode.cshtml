@@ -135,6 +135,7 @@
             txtItem.val("");
         } else {
             txtItem.val($(source).children("option:selected").text());
+            txtItem.attr("disabled", "disabled");
         }
 
     }

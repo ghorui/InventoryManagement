@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using InventoryApp.BLL;
 using InventoryApp.Models.BarCode;
 
 namespace InventoryApp.Controllers
@@ -58,8 +59,15 @@ namespace InventoryApp.Controllers
 
         public JsonResult GetBarCode(BarCodeDTO dto)
         {
+            ValidateBarCodeProperties(dto);
+
             var barCodeValue = dto.BarCodeValue;
             return Json(barCodeValue, JsonRequestBehavior.AllowGet);
+        }
+
+        private void ValidateBarCodeProperties(BarCodeDTO dto)
+        {
+            BarCodeBLL.ValidateBarCodeProperties(dto);
         }
     }
 }
