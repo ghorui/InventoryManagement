@@ -117,7 +117,7 @@ namespace InventoryApp.BLL
             }
 
             var sizes = GetAllSizes();
-            if (sizes.All(d => d.Text != dto.Vendor))
+            if (sizes.All(d => d.Text != dto.Size))
             {
                 BarCodeDAL.SaveBarCodeProperties("Size", dto.Size);
             }

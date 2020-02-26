@@ -84,8 +84,13 @@
                     <li>@Html.ActionLink("SERVICE", "Service", "Home")</li>
                     <li>@Html.ActionLink("PORTFOLIO", "Portfolio", "Home")</li>
                     <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
-                    @Html.Partial("_LoginPartial")
-                </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("BarCode", "PrintBarCode", "Home")</li>
+                    }
+                    <li>@Html.Partial("_LoginPartial")</li>
+                    
+</ul>
             </div>
         </div>
     </nav>

@@ -84,11 +84,12 @@
                     <li>@Html.ActionLink("SERVICE", "Service", "Home")</li>
                     <li>@Html.ActionLink("PORTFOLIO", "Portfolio", "Home")</li>
                     <li>@Html.ActionLink("CONTACT", "Contact", "Home")</li>
-                    <li>@Html.Partial("_LoginPartial")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li>@Html.ActionLink("Print Bar Code", "PrintBarCode", "Home")</li>
+                        <li>@Html.ActionLink("BarCode", "PrintBarCode", "Home")</li>
                     }
+                    <li>@Html.Partial("_LoginPartial")</li>
+                    
 </ul>
             </div>
         </div>
