@@ -119,15 +119,16 @@
             <input type="text" id="txtBarCode" disabled="disabled" />
         </div>
         <div class="col-lg-6" style="background-color: blanchedalmond; color: black">
-            <div id="divBarCode">
-                <img alt="Bar Code" id="imgBarCode" style="height: 100px; width: 100px" src="~/Images/SampleBarCode.png" />
+            <hr/>
+            <div id="divBarCode" >
+                <img alt="Bar Code" id="imgBarCode" style="height: 120px; width: 290px;"/>
                 <input type="button" id="PrintBarCode" value="Print BarCode"/>
             </div>
-            <hr />
+            <hr/>
             Number of Item you want to save
             <div>
-                <input type="text" id="txtNumberOfProduct" />
-                <input type="button" id="btnNumberOfProduct" value="Save Product" />
+                <input type="text" id="txtNumberOfProduct"/>
+                <input type="button" id="btnNumberOfProduct" value="Save Product"/>
             </div>
         </div>
     </div>
@@ -172,6 +173,7 @@
             var txtactualCost = $('#txtactualCost');
             var txtSellPrice = $('#txtSellPrice');
             var txtMRP = $('#txtMRP');
+            var imgBarCode = $('#imgBarCode');
 
             var txtBarCode = $('#txtBarCode');
 
@@ -193,10 +195,10 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (r) {
-                    alert("response: " + r);
-                    txtBarCode.val(r);
+                    txtBarCode.val(r[0]);
                     var divBarCode = $('#divBarCode');
                     divBarCode.css('visibility', 'visible');
+                    imgBarCode.attr("src", r[1]);
                 }
             });
 
