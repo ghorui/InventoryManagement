@@ -209,6 +209,25 @@
         var txtItem = $(item);
         txtItem.val(txtSource.val());
     }
+
+    $("body").on("click",
+        "#PrintBarCode",
+        function () {
+            var imgBarCode = $('#imgBarCode');
+            var src = "";
+            src = imgBarCode.attr("src");
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/BarCodeToPrinter",
+                data: JSON.stringify({ filePath: src }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    alert(r);
+                }
+            });
+        });
     FixInitial();
 
 </script>
