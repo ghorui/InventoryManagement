@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using InventoryApp.DAL;
+using InventoryApp.Models;
 using InventoryApp.Models.BarCode;
 
 namespace InventoryApp.BLL
@@ -127,6 +128,26 @@ namespace InventoryApp.BLL
             {
                 BarCodeDAL.SaveBarCodeProperties("Vendor", dto.Vendor);
             }
+        }
+
+        public static void SaveBarCode(BarCodeDTO dto, string barCodeValue, string relativePath)
+        {
+            BarCodeDAL.SaveBarCode(dto, barCodeValue, relativePath);
+        }
+
+        public static string ValidateOrCreateBarCode(string barCodeValue, float mrp)
+        {
+            return BarCodeDAL.ValidateOrCreateBarCode(barCodeValue, mrp);
+        }
+
+        public static string GetBarCodeFilePathByBarCode(string currentBarCode)
+        {
+            return BarCodeDAL.GetBarCodeFilePathByBarCode(currentBarCode);
+        }
+
+        public static void SaveProduct(ProductInfo product)
+        {
+            BarCodeDAL.SaveProduct(product);
         }
     }
 }

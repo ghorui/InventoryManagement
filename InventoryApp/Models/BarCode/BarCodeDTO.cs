@@ -17,11 +17,14 @@ namespace InventoryApp.Models.BarCode
         public string Craft { get; set; }
         public string Size { get; set; }
         public string Vendor { get; set; }
-        public string ManufactureDate { get; set; }
+        //public string ManufactureDate { get; set; }
         public float ActualCost { get; set; }
         public float SellingPrice { get; set; }
         public float Mrp { get; set; }
+        public int Count { get; set; }
+        public bool IsValid { get; set; }
 
+        //one placeholder for future use
         public string BarCodeValue
         {
             get
@@ -33,7 +36,7 @@ namespace InventoryApp.Models.BarCode
                     barCodeInfo.Crafts.Where(b => b.Text == Craft).Select(s => s.Value).FirstOrDefault(),
                     barCodeInfo.Sizes.Where(b => b.Text == Size).Select(s => s.Value).FirstOrDefault(),
                     barCodeInfo.Vendors.Where(b => b.Text == Vendor).Select(s => s.Value).FirstOrDefault(),
-                   ManufactureDate);
+                    Count.ToString(), "00");
                 return name.Replace(' ','0');
             }   // get method
         }
@@ -203,40 +206,40 @@ namespace InventoryApp.Models.BarCode
             return result;
         }
     }
-    public class ManufactureDate
-    {
-        public int Id { get; set; }
-        public string Format { get; set; }
-        public string Name { get; set; }
+    //public class ManufactureDate
+    //{
+    //    public int Id { get; set; }
+    //    public string Format { get; set; }
+    //    public string Name { get; set; }
 
-        public static ManufactureDate Create(IDataRecord record)
-        {
-            ManufactureDate result = null;
-            if (record.FieldCount > 0)
-            {
-                result = new ManufactureDate();
+    //    public static ManufactureDate Create(IDataRecord record)
+    //    {
+    //        ManufactureDate result = null;
+    //        if (record.FieldCount > 0)
+    //        {
+    //            result = new ManufactureDate();
 
-                for (int i = 0; i < record.FieldCount; i++)
-                {
-                    switch (record.GetName(i))
-                    {
-                        case "Id":
-                            int.TryParse(record["Id"].ToString(), out var id);
-                            result.Id = id;
-                            break;
-                        case "Name":
-                            result.Name = record["Name"].ToString();
-                            break;
-                        case "Format":
-                            result.Format = record["Format"].ToString();
-                            break;
-                    }
-                }
-            }
+    //            for (int i = 0; i < record.FieldCount; i++)
+    //            {
+    //                switch (record.GetName(i))
+    //                {
+    //                    case "Id":
+    //                        int.TryParse(record["Id"].ToString(), out var id);
+    //                        result.Id = id;
+    //                        break;
+    //                    case "Name":
+    //                        result.Name = record["Name"].ToString();
+    //                        break;
+    //                    case "Format":
+    //                        result.Format = record["Format"].ToString();
+    //                        break;
+    //                }
+    //            }
+    //        }
 
-            return result;
-        }
-    }
+    //        return result;
+    //    }
+    //}
     //public class ActualCost
     //{
     //    public int Id { get; set; }

@@ -70,17 +70,6 @@
                     </tr>
                     <tr>
                         <td>
-                            Manufacture Time (MMYY)
-                        </td>
-                        <td>
-                            <input type="text" id="txtManuTimeEntry" onblur="CheckTextBox('#txtManuTimeEntry', '#txtManuTime')" />
-                        </td>
-                        <td>
-                            <input type="text" id="txtManuTime" disabled="disabled" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             Actual Cost
                         </td>
                         <td>
@@ -114,25 +103,25 @@
                     </tr>
                 </tbody>
             </table>
-            <hr/>
+            <hr />
             <input type="button" value="Generate Token" id="btnGenerate" />
             <input type="text" id="txtBarCode" disabled="disabled" />
         </div>
         <div class="col-lg-6" style="background-color: blanchedalmond; color: black">
-            <hr/>
-            <div id="divBarCode" >
-                <img alt="Bar Code" id="imgBarCode" style="height: 120px; width: 290px;"/>
-                <input type="button" id="PrintBarCode" value="Print BarCode"/>
+            <hr />
+            <div id="divBarCode">
+                <img alt="Bar Code" id="imgBarCode" style="height: 120px; width: 290px;" />
+                <input type="button" id="PrintBarCode" value="Print BarCode" />
             </div>
-            <hr/>
+            <hr />
             Number of Item you want to save
             <div>
-                <input type="text" id="txtNumberOfProduct"/>
-                <input type="button" id="btnNumberOfProduct" value="Save Product"/>
+                <input type="text" id="txtNumberOfProduct" />
+                <input type="button" id="btnNumberOfProduct" value="Save Product" />
             </div>
         </div>
     </div>
-    
+
 </section>
 <script>
 
@@ -144,7 +133,7 @@
         $('#Vendor').trigger("change");
         var divBarCode = $('#divBarCode');
         divBarCode.css('visibility', 'hidden');
-        
+
     };
 
     function CheckValue(source, item) {
@@ -169,7 +158,7 @@
             var txtCraft = $('#txtCraft');
             var txtSize = $('#txtSize');
             var txtVendor = $('#txtVendor');
-            var txtManuTime = $('#txtManuTime');
+            //var txtManuTime = $('#txtManuTime');
             var txtactualCost = $('#txtactualCost');
             var txtSellPrice = $('#txtSellPrice');
             var txtMRP = $('#txtMRP');
@@ -183,7 +172,7 @@
             barCodeDTO.Craft = txtCraft.val();
             barCodeDTO.Size = txtSize.val();
             barCodeDTO.Vendor = txtVendor.val();
-            barCodeDTO.ManufactureDate = txtManuTime.val();
+            //barCodeDTO.ManufactureDate = txtManuTime.val();
             barCodeDTO.ActualCost = txtactualCost.val();
             barCodeDTO.SellingPrice = txtSellPrice.val();
             barCodeDTO.Mrp = txtMRP.val();
@@ -216,11 +205,23 @@
             var imgBarCode = $('#imgBarCode');
             var src = "";
             src = imgBarCode.attr("src");
+            window.open(src, "Print Bar Code", "width=500, height=450");
+        });
+
+    $("body").on("click",
+        "#btnNumberOfProduct",
+        function () {
+            var txtBarCode = $('#txtBarCode');
+            var txtNumberOfProduct = $('#txtNumberOfProduct');
+
+            var product = {};
+            product.BarCode = txtBarCode.val();
+            product.Count = txtNumberOfProduct.val();
 
             $.ajax({
                 type: "POST",
-                url: "/Home/BarCodeToPrinter",
-                data: JSON.stringify({ filePath: src }),
+                url: "/Home/SaveProduct",
+                data: JSON.stringify(product),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (r) {
@@ -228,6 +229,7 @@
                 }
             });
         });
+
     FixInitial();
 
 </script>

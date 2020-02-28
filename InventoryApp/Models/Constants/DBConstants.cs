@@ -24,6 +24,11 @@ namespace InventoryApp.Models.Constants
         public static string usp_getAllSize = "usp_getAllSize";
         public static string usp_getAllVendor = "usp_getAllVendor";
         public static string usp_saveBarCodeProperties= "usp_saveBarCodeProperties";
+        public static string usp_saveBarCode = "usp_saveBarCode";
+        public static string usp_getBarCodeByPattern = "usp_getBarCodeByPattern";
+        public static string usp_validateBarCode = "usp_validateBarCode";
+        public static string usp_getFilePathByBarCode = "usp_getFilePathByBarCode";
+        public static string usp_saveProductByInfo = "usp_saveProductByInfo";
 
         #endregion Stored Proc
     }

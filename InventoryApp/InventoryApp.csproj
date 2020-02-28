@@ -49,6 +49,9 @@
     <Reference Include="BarcodeStandard, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BarcodeLib.2.2.5\lib\netstandard2.0\BarcodeStandard.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
@@ -209,6 +212,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\ProductInfo.cs" />
     <Compile Include="Models\Shopping\BillingDTO.cs" />
     <Compile Include="Models\Shopping\CustomerSellingProductMapping.cs" />
     <Compile Include="Models\Shopping\Product.cs" />
@@ -303,6 +307,7 @@
     <Content Include="Images\Backup\team-img3.jpg" />
     <Content Include="Images\Backup\team-img4.jpg" />
     <Content Include="Images\home-bg.jpg" />
+    <Content Include="Images\Logo.png" />
     <Content Include="Images\portfolio-img1.jpg" />
     <Content Include="Images\portfolio-img2.jpg" />
     <Content Include="Images\portfolio-img3.jpg" />
@@ -357,6 +362,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
