@@ -149,21 +149,6 @@ namespace InventoryApp.Controllers
             BarCodeBLL.ValidateBarCodeProperties(dto);
         }
 
-        //public JsonResult BarCodeToPrinter(string filePath)
-        //{
-        //    var dir = Server.MapPath("/Images/BarCode");
-        //    string path = dir + filePath.Substring(filePath.IndexOf("BarCode", StringComparison.Ordinal) + 7);
-        //    Process p = new Process
-        //    {
-        //        StartInfo = new ProcessStartInfo()
-        //        {
-        //            CreateNoWindow = true, Verb = "print", FileName = path //put the correct path here
-        //        }
-        //    };
-        //    p.Start();
-        //    return Json(true);
-        //}
-
         public JsonResult SaveProduct(ProductInfo product)
         {
             BarCodeBLL.SaveProduct(product);

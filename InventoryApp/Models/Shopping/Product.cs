@@ -11,6 +11,7 @@ namespace InventoryApp.Models.Shopping
     {
         public string BarCode { get; set; }
         public string ItemName { get; set; }
+        public string Vendor { get; set; }
         public int Quantity { get; set; }
         public float UnitPrice { get; set; }
         public float Value { get; set; }
@@ -63,6 +64,9 @@ namespace InventoryApp.Models.Shopping
                         case "ItemDiscountAmount":
                             float.TryParse(record["ItemDiscountAmount"].ToString(), out var itemDiscountAmount);
                             result.ItemDiscountAmount = itemDiscountAmount;
+                            break;
+                        case "Vendor":
+                            result.Vendor = record["Vendor"].ToString();
                             break;
                     }
                 }
