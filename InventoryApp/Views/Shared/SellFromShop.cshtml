@@ -332,6 +332,7 @@
         var txtDiscountAmount = $("#txtDiscountAmount");
         var txtGrandTotal = $("#txtGrandTotal");
         var txtAdditionalCharges = $("#txtAdditionalCharges");
+        var mobileNumber = $("#MobileNumber");
         BillingDTO.OverallDiscountRate = txtDiscountRate.val();
         BillingDTO.OverallDiscountAmount = txtDiscountAmount.val();
         BillingDTO.CGSTRate = txtCGST.val();
@@ -343,6 +344,7 @@
         BillingDTO.TotalAmount = txtTotalAmount.val();
         BillingDTO.GrandTotal = txtGrandTotal.val();
         BillingDTO.AdditionalCharges = txtAdditionalCharges.val();
+        BillingDTO.CustomerMobile = mobileNumber.val();
         $("#tblProductToSell TBODY TR").each(function () {
             var row = $(this);
             var product = {};
@@ -363,12 +365,13 @@
         //Send the JSON array to Controller using AJAX.
         $.ajax({
             type: "POST",
-            url: "/Billing/Index",
+            url: "/Billing/Sell",
             data: JSON.stringify(BillingDTO),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (r) {
-                alert(r + " record(s) inserted.");
+                debugger;
+                window.open(r);
             }
         });
     });

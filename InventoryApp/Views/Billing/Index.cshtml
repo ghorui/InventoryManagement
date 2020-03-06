@@ -1,8 +1,7 @@
-﻿@model InventoryApp.Models.Shopping.BillingDTO
+﻿@model InventoryApp.Models.Shopping.CustomerBillingDetails
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -11,120 +10,89 @@
     <h4>Detailed Bill</h4>
     <hr/>
     <div>
-        Name: <input type="text" disabled="disabled" id="txtCustomerName"/> Phone Number: <input type="text" disabled="disabled" id="txtCustomerPhone" />
+        Name: @Model.Customer.Name Phone Number: @Model.Customer.MobileNumber
     </div>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TransactionId)
+            @Html.DisplayNameFor(model => model.BillingDto.TransactionId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TransactionId)
+            @Html.DisplayFor(model => model.BillingDto.TransactionId)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.OverallDiscountRate)
+            @Html.DisplayNameFor(model => model.BillingDto.OverallDiscountRate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OverallDiscountRate)
+            @Html.DisplayFor(model => model.BillingDto.OverallDiscountRate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.OverallDiscountAmount)
+            @Html.DisplayNameFor(model => model.BillingDto.OverallDiscountAmount)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OverallDiscountAmount)
+            @Html.DisplayFor(model => model.BillingDto.OverallDiscountAmount)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CGSTRate)
+            @Html.DisplayNameFor(model => model.BillingDto.CGSTRate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CGSTRate)
+            @Html.DisplayFor(model => model.BillingDto.CGSTRate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SGSTRate)
+            @Html.DisplayNameFor(model => model.BillingDto.SGSTRate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SGSTRate)
+            @Html.DisplayFor(model => model.BillingDto.SGSTRate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IGSTRate)
+            @Html.DisplayNameFor(model => model.BillingDto.IGSTRate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IGSTRate)
+            @Html.DisplayFor(model => model.BillingDto.IGSTRate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AdditionalCharges)
+            @Html.DisplayNameFor(model => model.BillingDto.AdditionalCharges)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AdditionalCharges)
+            @Html.DisplayFor(model => model.BillingDto.AdditionalCharges)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
+            @Html.DisplayNameFor(model => model.BillingDto.TotalAmount)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TotalAmount)
+            @Html.DisplayFor(model => model.BillingDto.TotalAmount)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.GrandTotal)
+            @Html.DisplayNameFor(model => model.BillingDto.GrandTotal)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.GrandTotal)
+            @Html.DisplayFor(model => model.BillingDto.GrandTotal)
         </dd>
 
     </dl>
 </div>
-<p>
+@*<p>
     <input type="button" id="btnPayment" value="Payment Done" />
     <input type="button" id="btnSave" onclick="@Html.ActionLink("Save All" ,"Print",@Model.TransactionId)" value="Save All" />
-</p>
+</p>*@
 
 <script type="text/javascript">
-    $("body").on("click",
-        "#btnPayment",
-        function () {
-
-            $.ajax({
-                type: "GET",
-                url: "/Shop/GetProductByBarCode?transationId=" +@Model.TransactionId ,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data, status) {
-                    var res = data;
-                    alert(res);
-                },
-                error: function(ex) {
-                    alert("Error!" + ex);
-                }
-            });
-        });
-
-    $.ajax({
-        type: "GET",
-        url: "/Billing/GetCustomerDetailsByTransactionId?transationId=" +@Model.TransactionId ,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data, status) {
-            var res = data;
-            alert(res);
-        },
-        error: function(ex) {
-            alert("Error!" + ex);
-        }
-    });
+    
 </script>

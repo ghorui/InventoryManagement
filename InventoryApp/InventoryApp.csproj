@@ -214,6 +214,7 @@
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\ProductInfo.cs" />
     <Compile Include="Models\Shopping\BillingDTO.cs" />
+    <Compile Include="Models\Shopping\CustomerBillingDetails.cs" />
     <Compile Include="Models\Shopping\CustomerSellingProductMapping.cs" />
     <Compile Include="Models\Shopping\Product.cs" />
     <Compile Include="Models\Shopping\SellingProduct.cs" />

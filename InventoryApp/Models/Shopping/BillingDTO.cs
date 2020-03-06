@@ -7,11 +7,10 @@ using InventoryApp.DAL;
 
 namespace InventoryApp.Models.Shopping
 {
-
-
     public class BillingDTO
     {
         public long TransactionId { get; set; }
+        public string CustomerMobile { get; set; }
         public string OverallDiscountRate { get; set; }
         public string OverallDiscountAmount { get; set; }
         public string CGSTRate { get; set; }
@@ -44,7 +43,8 @@ namespace InventoryApp.Models.Shopping
                 TotalAmount = record["TotalAmount"].ToString(),
                 GrandTotal = record["GrandTotal"].ToString(),
                 LastUpdatedUser = record["LastUpdatedUser"].ToString(),
-                LastUpdatedTime = record["LastUpdateTime"].ToString()
+                LastUpdatedTime = record["LastUpdateTime"].ToString(),
+                CustomerMobile = record["CustomerMobile"].ToString()
             };
             
 

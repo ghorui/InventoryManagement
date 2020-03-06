@@ -63,6 +63,7 @@ namespace InventoryApp.DAL
                     sqlCommand.Parameters.AddWithValue("@grandAmount", billingDto.GrandTotal);
                     sqlCommand.Parameters.AddWithValue("@lastUpdatedUser", billingDto.LastUpdatedUser);
                     sqlCommand.Parameters.AddWithValue("@transactionId", 0);
+                    sqlCommand.Parameters.AddWithValue("@customerMobile", billingDto.CustomerMobile);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     if (sqlDataReader.Read())
@@ -192,6 +193,24 @@ namespace InventoryApp.DAL
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                 DataHelper dataHelper = new DataHelper();
                 res = dataHelper.GetData(sqlDataReader, Product.Create).ToList();
+            }
+            return res;
+        }
+
+        public static Customer GetCustomerDetailsByTransactionId(string transactionId)
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Customer res;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string cmdText = DBConstants.usp_GetCustomerbytransactionId;
+                SqlCommand sqlCommand = new SqlCommand(cmdText, connection);
+                sqlCommand.Parameters.AddWithValue("@transactionId", transactionId);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                DataHelper dataHelper = new DataHelper();
+                res = dataHelper.GetData(sqlDataReader, Customer.Create).FirstOrDefault();
             }
             return res;
         }

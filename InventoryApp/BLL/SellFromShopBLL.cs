@@ -41,5 +41,10 @@ namespace InventoryApp.BLL
         {
             return SellFromShopDAL.GetProductByBarCode(barCode);
         }
+
+        public static Customer GetCustomerDetailsByTransactionId(string transactionId)
+        {
+            return SellFromShopDAL.GetCustomerDetailsByTransactionId(transactionId);
+        }
     }
 }
