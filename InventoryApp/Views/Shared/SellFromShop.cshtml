@@ -294,12 +294,14 @@
                     txtQuantity.val(data[0].Quantity);
                     txtUnitPrice.val(data[0].UnitPrice);
                     txtAmount.val(data[0].Quantity * data[0].UnitPrice);
+                    UpdateAmount();
                 },
                 error: function (ex) {
                     alert("Error!" + ex);
                 }
             });
         }
+        
     }
 
     function UpdateAmount() {
