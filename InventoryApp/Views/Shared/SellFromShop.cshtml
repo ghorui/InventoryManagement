@@ -301,7 +301,7 @@
                 }
             });
         }
-        
+
     }
 
     function UpdateAmount() {
@@ -372,8 +372,9 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (r) {
-                debugger;
-                window.open(r);
+                window.open(r,
+                "Window2",
+                "status=no,height=350px,width=350px,resizable=yes,toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
             }
         });
     });
