@@ -25,7 +25,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h2>Dashboard</h2>
                 <p>
                     Dashboard to show existing inventory details.
@@ -36,7 +36,7 @@
 
             @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("SalesAgent"))
             {
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <h2>Shop</h2>
                     <p>Incoming and outgoing product in the <b>Shop</b></p>
                     <p><a class="btn btn-default" href="#" onclick="location.href = '@Url.Action("PrintBarCode", "Home")'">Product Coming-in to the inventory &raquo;</a></p>
