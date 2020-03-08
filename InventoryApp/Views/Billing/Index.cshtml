@@ -5,13 +5,23 @@
     Layout = "";
 }
 
-<h2 align="center">Kamala Saree</h2>
-
+<div>
+    <img src="~/Images/Logo.png" alt="Kamala Saree" width="100px" height="100px" /> 
+    <span>
+        <strong>Kamala Saree Pvt Ltd.</strong><br/>
+        00, Fulia Palpara 
+        Fulia Colony<br/>
+        Nadia, West Bengal
+        PIN : 741402<br/>
+    </span>
+    <p>Phone: +91 9434165551, 91(03473) 234-555</p>
+    <p>Email: arup@kamalasaree.com</p>
+</div>
 <div>
     <h4>Detailed Bill</h4>
     <hr />
     <div>
-        <table class="col-lg-6" border="0" style="column-gap: 10px">
+        <table border="0" style="column-gap: 10px">
             <tr>
                 <td>
                     Customer Name: &nbsp;
@@ -19,29 +29,7 @@
                 <td>
                     <b>@Model.Customer.Name</b>
                 </td>
-            </tr>
-            <tr>
-                <td>Phone Number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>
-                    <b>@Model.Customer.MobileNumber</b>
-                </td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td>
-                    <b>@Model.Customer.Address</b>
-                </td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td>
-                    <b>@Model.Customer.Email</b>
-                </td>
-            </tr>
-        </table>
-        <hr/>
-        <table class="col-lg-6">
-            <tr>
+                <td>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>
                     Seller: &nbsp;
                 </td>
@@ -50,6 +38,11 @@
                 </td>
             </tr>
             <tr>
+                <td>Phone Number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    <b>@Model.Customer.MobileNumber</b>
+                </td>
+                <td>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>
                     Bill Time: &nbsp;
                 </td>
@@ -58,6 +51,11 @@
                 </td>
             </tr>
             <tr>
+                <td>Address:</td>
+                <td>
+                    <b>@Model.Customer.Address</b>
+                </td>
+                <td>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>
                     Payment Mode: &nbsp;
                 </td>
@@ -66,6 +64,11 @@
                 </td>
             </tr>
             <tr>
+                <td>Email:</td>
+                <td>
+                    <b>@Model.Customer.Email</b>
+                </td>
+                <td>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>
                     Bill Number: &nbsp;
                 </td>
@@ -74,8 +77,8 @@
                 </td>
             </tr>
         </table>
+        <hr />
     </div>
-    <hr />
     <div>
         <table class="table table-bordered table-condensed">
             <thead>
