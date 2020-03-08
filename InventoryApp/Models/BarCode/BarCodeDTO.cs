@@ -10,7 +10,7 @@ namespace InventoryApp.Models.BarCode
 {
     public class BarCodeDTO
     {
-        private string barCodeFormat = "{0,2}{1,2}{2,2}{3,2}{4,2}{5,4}";
+        private string barCodeFormat = "{0,2}{1,2}{2,2}{3,2}{4,4}{5,2}{6,2}";
 
         public string Dept { get; set; }
         public string Quality { get; set; }
