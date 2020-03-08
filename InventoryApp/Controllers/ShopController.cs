@@ -62,5 +62,12 @@ namespace InventoryApp.Controllers
             var response = Json(SellFromShopBLL.GetProductByBarCode(barCode), JsonRequestBehavior.AllowGet);
             return response;
         }
+
+        [HttpGet]
+        public JsonResult GetPaymentMethods()
+        {
+            var response = Json(SellFromShopBLL.GetPaymentMethods(), JsonRequestBehavior.AllowGet);
+            return response;
+        }
     }
 }

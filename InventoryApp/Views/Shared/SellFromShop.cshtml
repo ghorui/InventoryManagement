@@ -5,8 +5,8 @@
     Layout = null;
 }
 
-<div style="color: aqua; background-color: darkcyan">
-    <table id="tblProductToSell" style="color: black" width="40" class="col-md-7 table table-striped" cellpadding="0" cellspacing="0">
+<div style="color: black">
+    <table id="tblProductToSell" class="table table-bordered table-condensed">
         <thead>
             <tr>
                 <th>BarCode</th>
@@ -46,7 +46,9 @@
                 <td><input type="text" value="0" onblur="UpdateAmount()" id="txtItemDiscountPercentage" /></td>
                 <td><input type="text" disabled="disabled" onblur="UpdateAmount()" id="txtItemDiscountAmount" /></td>
                 <td><input type="text" disabled="disabled" onblur="UpdateAmount()" id="txtTaxableValue" /></td>
-                <td><input type="button" id="btnAdd" value="Add" /></td>
+                <td>
+                    <img src="~/Images/button_add.png" alt="Add" id="btnAdd" />
+                </td>
             </tr>
             <tr>
                 <td></td>
@@ -129,16 +131,45 @@
     </table>
 </div>
 <hr />
-
+Payment Method
+<select class="dropdown dropdown-toggle" style="color: black" id="PaymentList"></select>
+<input style="color: black" type="text" id="PaymentMethod" disabled="disabled" />
 <hr />
-<input type="button" id="btnSave" value="Save All" />
+<div align="right"><img src="~/Images/button_print.png" alt="Print" id="btnSave" /></div>
+
+@*<input style="background-image: url(/Images/button_print.png)" type="button" id="btnSave" value="Print Bill" />*@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 <script type="text/javascript">
 
+    function GetPaymentMethods() {
+        $.ajax({
+            type: "GET",
+            url: "/Shop/GetPaymentMethods",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response, status) {
+                if (response.length > 0) {
+                    $('#PaymentList').html('');
+                    var options = '';
+                    options += '<option value="Select">Select</option>';
+                    for (var i = 0; i < response.length; i++) {
+                        options += '<option value="' + response[i] + '">' + response[i] + '</option>';
+                    }
+                    $('#PaymentList').append(options);
+                }
+                $('#PaymentList').trigger("change");
+            },
+            error: function (ex) {
+                alert("Error!" + ex);
+            }
+        });
+    }
+
     $("body").on("click",
         "#btnAdd",
         function () {
+            debugger;
             //Reference the Name and Country TextBoxes.
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
@@ -212,6 +243,91 @@
                 UpdateSum();
             }
         });
+
+    $("#PaymentList").change(function () {
+        var txtSource = $("#PaymentList");
+        var txtItem = $("#PaymentMethod");
+        var itemId = txtSource.val();
+        if (itemId === "Others" || itemId === "Select") {
+            txtItem.removeAttr("disabled");
+            txtItem.val("");
+        } else {
+            txtItem.val($("#PaymentList").children("option:selected").text());
+            txtItem.attr("disabled", "disabled");
+        }
+    });
+
+    $("body").on("click", "#btnSave", function () {
+        //Loop through the Table rows and build a JSON array.
+        var BillingDTO = {};
+        var products = new Array();
+        var txtDiscountRate = $("#txtDiscountRate");
+        var txtCGST = $("#txtCGST");
+        var txtSGST = $("#txtSGST");
+        var txtIGST = $("#txtIGST");
+        var txtCGSTAmount = $("#txtCGSTAmount");
+        var txtSGSTAmount = $("#txtSGSTAmount");
+        var txtIGSTAmount = $("#txtIGSTAmount");
+        var txtTotalAmount = $("#txtTotalAmount");
+        var txtDiscountAmount = $("#txtDiscountAmount");
+        var txtGrandTotal = $("#txtGrandTotal");
+        var txtAdditionalCharges = $("#txtAdditionalCharges");
+        var mobileNumber = $("#MobileNumber");
+        var PaymentMethod = $("#PaymentMethod");
+        BillingDTO.OverallDiscountRate = txtDiscountRate.val();
+        BillingDTO.OverallDiscountAmount = txtDiscountAmount.val();
+        BillingDTO.CGSTRate = txtCGST.val();
+        BillingDTO.SGSTRate = txtSGST.val();
+        BillingDTO.IGSTRate = txtIGST.val();
+        BillingDTO.CGSTAmount = txtCGSTAmount.val();
+        BillingDTO.SGSTAmount = txtSGSTAmount.val();
+        BillingDTO.IGSTAmount = txtIGSTAmount.val();
+        BillingDTO.TotalAmount = txtTotalAmount.val();
+        BillingDTO.GrandTotal = txtGrandTotal.val();
+        BillingDTO.AdditionalCharges = txtAdditionalCharges.val();
+        BillingDTO.CustomerMobile = mobileNumber.val();
+        BillingDTO.PaymentMethod = PaymentMethod.val();
+
+        $("#tblProductToSell TBODY TR").each(function () {
+            var row = $(this);
+            var product = {};
+            product.BarCode = row.find("TD").eq(0).html();
+            product.ItemName = row.find("TD").eq(1).html();
+            product.Quantity = row.find("TD").eq(2).html();
+            product.UnitPrice = row.find("TD").eq(3).html();
+            product.Value = row.find("TD").eq(4).html();
+            product.ItemDiscountPercentage = row.find("TD").eq(5).html();
+            product.ItemDiscountAmount = row.find("TD").eq(6).html();
+            product.TaxableValue = row.find("TD").eq(7).html();
+            products.push(product);
+        });
+
+        if (products.length < 1) {
+            alert("Please add some product to continue");
+            return;
+        }
+        if (PaymentMethod.val() === "") {
+            alert("Please Select Payment method");
+            return;
+        }
+
+        BillingDTO.Products = products;
+        var req = JSON.stringify(BillingDTO);
+
+        //Send the JSON array to Controller using AJAX.
+        $.ajax({
+            type: "POST",
+            url: "/Billing/Sell",
+            data: JSON.stringify(BillingDTO),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                window.open(r,
+                    "Window2",
+                    "status=no,height=350px,width=350px,resizable=yes,toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+            }
+        });
+    });
 
     function UpdateSum() {
         var txtTotalAmount = $("#txtTotalAmount");
@@ -319,64 +435,7 @@
         txtTaxableValue.val(itemTaxableValue);
     }
 
-    $("body").on("click", "#btnSave", function () {
-        //Loop through the Table rows and build a JSON array.
-        var BillingDTO = {};
-        var products = new Array();
-        var txtDiscountRate = $("#txtDiscountRate");
-        var txtCGST = $("#txtCGST");
-        var txtSGST = $("#txtSGST");
-        var txtIGST = $("#txtIGST");
-        var txtCGSTAmount = $("#txtCGSTAmount");
-        var txtSGSTAmount = $("#txtSGSTAmount");
-        var txtIGSTAmount = $("#txtIGSTAmount");
-        var txtTotalAmount = $("#txtTotalAmount");
-        var txtDiscountAmount = $("#txtDiscountAmount");
-        var txtGrandTotal = $("#txtGrandTotal");
-        var txtAdditionalCharges = $("#txtAdditionalCharges");
-        var mobileNumber = $("#MobileNumber");
-        BillingDTO.OverallDiscountRate = txtDiscountRate.val();
-        BillingDTO.OverallDiscountAmount = txtDiscountAmount.val();
-        BillingDTO.CGSTRate = txtCGST.val();
-        BillingDTO.SGSTRate = txtSGST.val();
-        BillingDTO.IGSTRate = txtIGST.val();
-        BillingDTO.CGSTAmount = txtCGSTAmount.val();
-        BillingDTO.SGSTAmount = txtSGSTAmount.val();
-        BillingDTO.IGSTAmount = txtIGSTAmount.val();
-        BillingDTO.TotalAmount = txtTotalAmount.val();
-        BillingDTO.GrandTotal = txtGrandTotal.val();
-        BillingDTO.AdditionalCharges = txtAdditionalCharges.val();
-        BillingDTO.CustomerMobile = mobileNumber.val();
-        $("#tblProductToSell TBODY TR").each(function () {
-            var row = $(this);
-            var product = {};
-            product.BarCode = row.find("TD").eq(0).html();
-            product.ItemName = row.find("TD").eq(1).html();
-            product.Quantity = row.find("TD").eq(2).html();
-            product.UnitPrice = row.find("TD").eq(3).html();
-            product.Value = row.find("TD").eq(4).html();
-            product.ItemDiscountPercentage = row.find("TD").eq(5).html();
-            product.ItemDiscountAmount = row.find("TD").eq(6).html();
-            product.TaxableValue = row.find("TD").eq(7).html();
-            products.push(product);
-        });
+    GetPaymentMethods();
 
-        BillingDTO.Products = products;
-        var req = JSON.stringify(BillingDTO);
-
-        //Send the JSON array to Controller using AJAX.
-        $.ajax({
-            type: "POST",
-            url: "/Billing/Sell",
-            data: JSON.stringify(BillingDTO),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (r) {
-                window.open(r,
-                "Window2",
-                "status=no,height=350px,width=350px,resizable=yes,toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
-            }
-        });
-    });
 </script>
 

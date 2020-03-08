@@ -23,7 +23,6 @@ namespace InventoryApp.BLL
 
         public static long SellProduct(BillingDTO billingDto)
         {
-            //var sellDto = SellFromShopDAL.RegisterSell();
             return SellFromShopDAL.SellProduct(billingDto);
         }
 
@@ -45,6 +44,11 @@ namespace InventoryApp.BLL
         public static Customer GetCustomerDetailsByTransactionId(string transactionId)
         {
             return SellFromShopDAL.GetCustomerDetailsByTransactionId(transactionId);
+        }
+
+        public static List<string> GetPaymentMethods()
+        {
+            return SellFromShopDAL.GetPaymentMethods();
         }
     }
 }

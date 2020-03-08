@@ -64,6 +64,7 @@ namespace InventoryApp.DAL
                     sqlCommand.Parameters.AddWithValue("@lastUpdatedUser", billingDto.LastUpdatedUser);
                     sqlCommand.Parameters.AddWithValue("@transactionId", 0);
                     sqlCommand.Parameters.AddWithValue("@customerMobile", billingDto.CustomerMobile);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMethod", billingDto.PaymentMethod);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     if (sqlDataReader.Read())
@@ -180,7 +181,7 @@ namespace InventoryApp.DAL
 
         public static List<Product> GetProductByBarCode(string barCode)
         {
-            
+
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             List<Product> res;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -213,6 +214,26 @@ namespace InventoryApp.DAL
                 res = dataHelper.GetData(sqlDataReader, Customer.Create).FirstOrDefault();
             }
             return res;
+        }
+
+        public static List<string> GetPaymentMethods()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            List<string> paymentMethods = new List<string>() {"Others"};
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string cmdText = DBConstants.usp_getPaymentMethods;
+                SqlCommand sqlCommand = new SqlCommand(cmdText, connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    string entry = sqlDataReader["PaymentMethod"].ToString();
+                    paymentMethods.Add(entry);
+                }
+            }
+            return paymentMethods;
         }
     }
 }

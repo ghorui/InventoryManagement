@@ -25,30 +25,75 @@ namespace InventoryApp.Models.Shopping
         public List<Product> Products { get; set; }
         public string LastUpdatedUser { get; set; }
         public string LastUpdatedTime { get; set; }
+        public string PaymentMethod { get; set; }
 
         public static BillingDTO Create(IDataRecord record)
         {
-            var res =  new BillingDTO()
+            BillingDTO result = null;
+            if (record.FieldCount > 0)
             {
-                TransactionId = Convert.ToInt64(record["TransactionId"].ToString()),
-                OverallDiscountRate = record["OverallDiscountRate"].ToString(),
-                OverallDiscountAmount = record["OverallDiscountAmount"].ToString(),
-                CGSTRate = record["CGSTRate"].ToString(),
-                CGSTAmount = record["CGSTAmount"].ToString(),
-                SGSTRate = record["SGSTRate"].ToString(),
-                SGSTAmount = record["SGSTAmount"].ToString(),
-                IGSTRate = record["IGSTRate"].ToString(),
-                IGSTAmount = record["IGSTAmount"].ToString(),
-                AdditionalCharges = record["AdditionalCharges"].ToString(),
-                TotalAmount = record["TotalAmount"].ToString(),
-                GrandTotal = record["GrandTotal"].ToString(),
-                LastUpdatedUser = record["LastUpdatedUser"].ToString(),
-                LastUpdatedTime = record["LastUpdateTime"].ToString(),
-                CustomerMobile = record["CustomerMobile"].ToString()
-            };
-            
+                result = new BillingDTO();
 
-            return res;
+                for (int i = 0; i < record.FieldCount; i++)
+                {
+                    var propertyName = record.GetName(i);
+                    switch (propertyName)
+                    {
+                        case "TransactionId":
+                            int.TryParse(record[propertyName].ToString(), out var data);
+                            result.TransactionId = data;
+                            break;
+                        case "OverallDiscountRate":
+                            result.OverallDiscountRate = record[propertyName].ToString();
+                            break;
+                        case "OverallDiscountAmount":
+                            result.OverallDiscountAmount = record[propertyName].ToString();
+                            break;
+                        case "CGSTRate":
+                            result.CGSTRate = record[propertyName].ToString();
+                            break;
+                        case "CGSTAmount":
+                            result.CGSTAmount = record[propertyName].ToString();
+                            break;
+                        case "SGSTRate":
+                            result.SGSTRate = record[propertyName].ToString();
+                            break;
+                        case "SGSTAmount":
+                            result.SGSTAmount = record[propertyName].ToString();
+                            break;
+                        case "IGSTRate":
+                            result.IGSTRate = record[propertyName].ToString();
+                            break;
+                        case "IGSTAmount":
+                            result.IGSTAmount = record[propertyName].ToString();
+                            break;
+                        case "AdditionalCharges":
+                            result.AdditionalCharges = record[propertyName].ToString();
+                            break;
+                        case "TotalAmount":
+                            result.TotalAmount = record[propertyName].ToString();
+                            break;
+                        case "GrandTotal":
+                            result.GrandTotal = record[propertyName].ToString();
+                            break;
+                        case "LastUpdatedUser":
+                            result.LastUpdatedUser = record[propertyName].ToString();
+                            break;
+                        case "LastUpdateTime":
+                            result.LastUpdatedTime = record[propertyName].ToString();
+                            break;
+                        case "CustomerMobile":
+                            result.CustomerMobile = record[propertyName].ToString();
+                            break;
+                        case "PaymentMethod":
+                            result.PaymentMethod = record[propertyName].ToString();
+                            break;
+
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
