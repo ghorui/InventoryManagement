@@ -77,7 +77,7 @@
                 <td></td>
                 <td></td>
                 <td>CGST (%)</td>
-                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="6" id="txtCGST" /></td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="2.5" id="txtCGST" /></td>
                 <td><input type="text" disabled="disabled" id="txtCGSTAmount" /></td>
                 <td></td>
             </tr>
@@ -88,7 +88,7 @@
                 <td></td>
                 <td></td>
                 <td>SGST (%)</td>
-                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="6" id="txtSGST" /></td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="2.5" id="txtSGST" /></td>
                 <td><input type="text" disabled="disabled" id="txtSGSTAmount" /></td>
                 <td></td>
             </tr>
@@ -99,7 +99,7 @@
                 <td></td>
                 <td></td>
                 <td>IGST (%)</td>
-                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="12" id="txtIGST" /></td>
+                <td><input type="text" onkeypress="UpdateSum()" onblur="UpdateSum()" value="0" id="txtIGST" /></td>
                 <td><input type="text" disabled="disabled" id="txtIGSTAmount" /></td>
                 <td></td>
             </tr>
@@ -129,9 +129,12 @@
     </table>
 </div>
 <hr />
-Payment Method
-<select class="dropdown dropdown-toggle" style="color: black" id="PaymentList"></select>
-<input style="color: black" type="text" id="PaymentMethod" disabled="disabled" />
+<h4 style="color: black">
+    Payment Method
+    <select class="dropdown dropdown-toggle" style="color: black" id="PaymentList"></select>
+    <input style="color: black" type="text" id="PaymentMethod" disabled="disabled" />
+</h4>
+
 <hr />
 <div align="right"><input type="image" src="~/Images/button_print.png" alt="Print" id="btnSave" /></div>
 
@@ -167,8 +170,6 @@ Payment Method
     $("body").on("click",
         "#btnAdd",
         function () {
-            debugger;
-            //Reference the Name and Country TextBoxes.
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
             var txtQuantity = $("#txtQuantity");
@@ -238,6 +239,7 @@ Payment Method
                 txtItemDiscountPercentage.val("0");
                 txtItemDiscountAmount.val("");
                 txtTaxableValue.val("");
+                txtBarCode.focus();
                 UpdateSum();
             }
         });
@@ -246,12 +248,10 @@ Payment Method
         var txtSource = $("#PaymentList");
         var txtItem = $("#PaymentMethod");
         var itemId = txtSource.val();
-        if (itemId === "Others" || itemId === "Select") {
-            txtItem.removeAttr("disabled");
+        if (itemId === "Select") {
             txtItem.val("");
         } else {
             txtItem.val($("#PaymentList").children("option:selected").text());
-            txtItem.attr("disabled", "disabled");
         }
     });
 

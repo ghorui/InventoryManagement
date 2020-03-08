@@ -6,12 +6,12 @@
 
 <h2>Sell</h2>
 
-<div>
+<div style="background-color: white">
     @using (Html.BeginForm("Sell", "Shop", FormMethod.Post))
     {
         <div style="color: black">
             Customer Mobile Number: @Html.TextBoxFor(t => t.MobileNumber)
-            <button type="submit" class="btn btn-default" href="#" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'">Get Customer Details &raquo;</button>
+            <button type="submit" href="#" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'"><img src="~/Images/button_get-customer-details.png" alt="Get Customer" /></button>
             @if (Model != null)
             {
                 if (Model.Id == 0)
@@ -61,7 +61,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="submit" class="btn btn-default" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'">Save Customer Details &raquo;</button>
+            <button type="submit" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'"><img src="~/Images/button_save-customer-details.png" alt="Save Customer" /></button>
         </div>
     }
     @if (Model.Id != 0)
