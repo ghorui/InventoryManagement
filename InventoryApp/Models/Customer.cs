@@ -19,23 +19,51 @@ namespace InventoryApp.Models
 
         public string Email { get; set; }
 
+        public string CustomerGST { get; set; }
+
         public static Customer Create(IDataRecord record)
         {
-            Customer customer = new Customer();
+            Customer result = null;
+            if (record.FieldCount > 0)
+            {
+                result = new Customer();
 
-            customer.Id = Convert.ToInt32(record["Id"].ToString());
-            customer.Name = record["Name"].ToString();
-            customer.MobileNumber = record["MobNum"].ToString();
-            customer.Address = record["Address"].ToString();
-            customer.Email = record["Email"].ToString();
-
-            return customer;
-
+                for (int i = 0; i < record.FieldCount; i++)
+                {
+                    var propertyName = record.GetName(i);
+                    switch (propertyName)
+                    {
+                        case "Id":
+                            result.Id = Convert.ToInt32(record[propertyName].ToString());
+                            break;
+                        case "Name":
+                            result.Name = record[propertyName].ToString();
+                            break;
+                        case "MobNum":
+                            result.MobileNumber = record[propertyName].ToString();
+                            break;
+                        case "Address":
+                            result.Address = record[propertyName].ToString();
+                            break;
+                        case "Email":
+                            result.Email = record[propertyName].ToString();
+                            break;
+                        case "GST":
+                            result.CustomerGST = record[propertyName].ToString();
+                            break;
+                    }
+                }
+            }
+            return result;
         }
 
-        public List<SellingProduct> GetSellingProducts()
+        public UniqueSellingProduct GetSellingProducts()
         {
-            return new List<SellingProduct>();
+            return new UniqueSellingProduct()
+            {
+                SellingProducts = new List<SellingProduct>(),
+                UniqueIdentifier = Guid.NewGuid()
+            };
         }
 
     }

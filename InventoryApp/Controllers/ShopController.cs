@@ -1,10 +1,6 @@
 ﻿using InventoryApp.BLL;
 using InventoryApp.Models;
 using InventoryApp.Models.Shopping;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 
@@ -18,7 +14,7 @@ namespace InventoryApp.Controllers
         {
             ViewData["message"] = "Mobile number not found in the database. Please collect details.";
             Customer customer = null;
-            if (!string.IsNullOrEmpty(model.Name) && model.Id == 0)
+            if (!string.IsNullOrEmpty(model.Name))
             {
                 var res = SellFromShopBLL.SaveCustomer(model);
             }
@@ -26,7 +22,7 @@ namespace InventoryApp.Controllers
             {
                 customer = SellFromShopBLL.GetCustomer(model.MobileNumber);
             }
-            return View(customer == null ? new Customer() { MobileNumber = model.MobileNumber } : customer);
+            return View(customer ?? new Customer() { MobileNumber = model.MobileNumber });
         }
 
         public ActionResult SaveCustomer(Customer model)
@@ -48,9 +44,7 @@ namespace InventoryApp.Controllers
             }
             if (res > 0)
             {
-                //return Redirect("/Billing/Index/" + res);
                 return RedirectToAction("Index", "Billing", new { transactionId = res });
-                //RedirectToAction(actionName: "Index", controllerName: "Billing");
             }
 
             return null;

@@ -26,6 +26,8 @@ namespace InventoryApp.Models.Shopping
         public string LastUpdatedUser { get; set; }
         public string LastUpdatedTime { get; set; }
         public string PaymentMethod { get; set; }
+        public string Status { get; set; }
+        public Guid UniqueIdentifier { get; set; }
 
         public static BillingDTO Create(IDataRecord record)
         {
@@ -88,7 +90,12 @@ namespace InventoryApp.Models.Shopping
                         case "PaymentMethod":
                             result.PaymentMethod = record[propertyName].ToString();
                             break;
-
+                        case "Status":
+                            result.Status = record[propertyName].ToString();
+                            break;
+                        case "UniqueIdentifier":
+                            result.UniqueIdentifier = Guid.Parse(record[propertyName].ToString());
+                            break;
                     }
                 }
             }

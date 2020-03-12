@@ -23,12 +23,13 @@
                     </span>
                     <p>Phone: +91 9434165551, 91(03473) 234-555</p>
                     <p>Email: arup@kamalasaree.com</p>
+                    <p>GSTN: 19AAGGK9280K1ZU</p>
                 </div>
             </td> 
         </tr>
     </table>
     <div>
-        <h4>Detailed Bill</h4>
+        <h4>Tax Invoice</h4>
         <hr />
         <div>
             <table border="0" style="column-gap: 10px">
@@ -85,6 +86,13 @@
                     <td>
                         <b>@Model.BillingDto.TransactionId</b>
                     </td>
+                </tr>
+                <tr>
+                    <td>Customer GST:</td>
+                    <td>
+                        <b>@Model.Customer.CustomerGST</b>
+                    </td>
+                    <td>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             </table>
             <hr />

@@ -60,6 +60,14 @@
                         @Html.TextBoxFor(t => t.Email)
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Customer GST:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(t => t.CustomerGST)
+                    </td>
+                </tr>
             </table>
             <button type="submit" onclick="location.href='@Url.Action("Sell", "Shop", new { model = Model })'"><img src="~/Images/button_save-customer-details.png" alt="Save Customer" /></button>
         </div>

@@ -62,5 +62,12 @@ namespace InventoryApp.Controllers
             var barCodeInfo = new BarCodeInfo();
             return Json(barCodeInfo, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult ConfirmBilling(string uniqueIdentifier)
+        {
+            bool response = SellFromShopBLL.ConfirmBilling(uniqueIdentifier);
+            var message = response ? "Bill Saved Successfully" : "Billed save Failed!";
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
     }
 }

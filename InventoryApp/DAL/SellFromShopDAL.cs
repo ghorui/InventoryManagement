@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using InventoryApp.Models;
@@ -65,6 +66,7 @@ namespace InventoryApp.DAL
                     sqlCommand.Parameters.AddWithValue("@transactionId", 0);
                     sqlCommand.Parameters.AddWithValue("@customerMobile", billingDto.CustomerMobile);
                     sqlCommand.Parameters.AddWithValue("@PaymentMethod", billingDto.PaymentMethod);
+                    sqlCommand.Parameters.AddWithValue("@uniqueIdentifier", billingDto.UniqueIdentifier);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     if (sqlDataReader.Read())
@@ -87,11 +89,11 @@ namespace InventoryApp.DAL
                             sqlCommand.Parameters.AddWithValue("@barCode", product.BarCode);
                             sqlCommand.Parameters.AddWithValue("@itemName", product.ItemName);
                             sqlCommand.Parameters.AddWithValue("@quantity", product.Quantity);
-                            sqlCommand.Parameters.AddWithValue("@unitPrice", product.UnitPrice);
-                            sqlCommand.Parameters.AddWithValue("@value", product.Value);
+                            sqlCommand.Parameters.AddWithValue("@unitPrice", product.UnitPrice.ToString(CultureInfo.InvariantCulture));
+                            sqlCommand.Parameters.AddWithValue("@value", product.Value.ToString(CultureInfo.InvariantCulture));
                             sqlCommand.Parameters.AddWithValue("@itemDiscountPercentage", product.ItemDiscountPercentage);
-                            sqlCommand.Parameters.AddWithValue("@itemDiscountAmount", product.ItemDiscountAmount);
-                            sqlCommand.Parameters.AddWithValue("@taxableValue", product.TaxableValue);
+                            sqlCommand.Parameters.AddWithValue("@itemDiscountAmount", product.ItemDiscountAmount.ToString(CultureInfo.InvariantCulture));
+                            sqlCommand.Parameters.AddWithValue("@taxableValue", product.TaxableValue.ToString(CultureInfo.InvariantCulture));
                             sqlCommand.Parameters.AddWithValue("@billingTrxId", transactionId);
                             sqlCommand.CommandType = CommandType.StoredProcedure;
                             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -122,6 +124,8 @@ namespace InventoryApp.DAL
                 sqlCommand.Parameters.AddWithValue("@name", model.Name);
                 sqlCommand.Parameters.AddWithValue("@address", model.Address);
                 sqlCommand.Parameters.AddWithValue("@email", model.Email);
+                sqlCommand.Parameters.AddWithValue("@customerGST", model.CustomerGST);
+
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 res = sqlCommand.ExecuteNonQuery();
             }
@@ -219,7 +223,7 @@ namespace InventoryApp.DAL
         public static List<string> GetPaymentMethods()
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            List<string> paymentMethods = new List<string>() {"Others"};
+            List<string> paymentMethods = new List<string>() { "Others" };
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -234,6 +238,31 @@ namespace InventoryApp.DAL
                 }
             }
             return paymentMethods;
+        }
+
+        public static bool ConfirmBilling(string uniqueIdentifier)
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            bool response = false;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string cmdText = DBConstants.usp_updateProductInfo;
+                    SqlCommand sqlCommand = new SqlCommand(cmdText, connection) { CommandType = CommandType.StoredProcedure };
+                    sqlCommand.Parameters.AddWithValue("@uniqueIdentifier", uniqueIdentifier);
+                    sqlCommand.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                response = false;
+            }
+
+            return response;
         }
     }
 }

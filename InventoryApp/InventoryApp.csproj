@@ -311,10 +311,14 @@
     <Content Include="Images\button_generate-token.png" />
     <Content Include="Images\button_get-customer-details.png" />
     <Content Include="Images\button_inventory %281%29.png" />
+    <Content Include="Images\button_payment-done.png" />
     <Content Include="Images\button_print.png" />
     <Content Include="Images\button_product-coming-in-inventory.png" />
     <Content Include="Images\button_product-coming-in-shop.png" />
+    <Content Include="Images\button_remove.png" />
+    <Content Include="Images\button_save-all.png" />
     <Content Include="Images\button_save-customer-details.png" />
+    <Content Include="Images\button_save-data.png" />
     <Content Include="Images\button_save-product.png" />
     <Content Include="Images\button_sell-product-from-shop.png" />
     <Content Include="Images\button_send-product-from-inventory %281%29.png" />

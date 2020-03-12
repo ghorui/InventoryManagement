@@ -16,4 +16,10 @@ namespace InventoryApp.Models.Shopping
         public float DiscountAmount { get; set; }
         public float TaxableValue { get; set; }
     }
+
+    public class UniqueSellingProduct
+    {
+        public Guid UniqueIdentifier { get; set; }
+        public IEnumerable<SellingProduct> SellingProducts { get; set; }
+    }
 }

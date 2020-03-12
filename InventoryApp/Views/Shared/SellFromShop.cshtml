@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<InventoryApp.Models.Shopping.SellingProduct>
+@model InventoryApp.Models.Shopping.UniqueSellingProduct
 
 @{
     Layout = null;
@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var product in Model)
+            @foreach (var product in Model.SellingProducts)
             {
                 <tr>
                     <td>@product.BarCode</td>
@@ -122,7 +122,7 @@
                 <td></td>
                 <td colspan="2">Grand Total</td>
                 <td><input type="text" disabled="disabled" id="txtGrandTotal" /></td>
-                <td><label id="lblRoundOff">Test</label></td>
+                <td><label id="lblRoundOff"></label></td>
             </tr>
         </tfoot>
 
@@ -136,9 +136,13 @@
 </h4>
 
 <hr />
-<div align="right"><input type="image" src="~/Images/button_print.png" alt="Print" id="btnSave" /></div>
-
-@*<input style="background-image: url(/Images/button_print.png)" type="button" id="btnSave" value="Print Bill" />*@
+<div align="right">
+    <input type="image" src="~/Images/button_print.png" alt="Print" id="btnPrint"/> &nbsp;
+    <input type="image" alt="Save Billing Details" id="btnSave" src="~/Images/button_save-all.png" />
+</div>
+<div>
+    <input id="uniqueIdentifier" type="text" value="@Model.UniqueIdentifier" style="visibility: hidden" disabled="disabled" />
+</div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 <script type="text/javascript">
@@ -255,12 +259,14 @@
         }
     });
 
-    $("body").on("click", "#btnSave", function () {
+    $("body").on("click", 
+        "#btnPrint",
+        function () {
         //Loop through the Table rows and build a JSON array.
-        var BillingDTO = {};
+        var billingDto = {};
         var products = new Array();
         var txtDiscountRate = $("#txtDiscountRate");
-        var txtCGST = $("#txtCGST");
+        var txtCgst = $("#txtCGST");
         var txtSGST = $("#txtSGST");
         var txtIGST = $("#txtIGST");
         var txtCGSTAmount = $("#txtCGSTAmount");
@@ -272,19 +278,21 @@
         var txtAdditionalCharges = $("#txtAdditionalCharges");
         var mobileNumber = $("#MobileNumber");
         var PaymentMethod = $("#PaymentMethod");
-        BillingDTO.OverallDiscountRate = txtDiscountRate.val();
-        BillingDTO.OverallDiscountAmount = txtDiscountAmount.val();
-        BillingDTO.CGSTRate = txtCGST.val();
-        BillingDTO.SGSTRate = txtSGST.val();
-        BillingDTO.IGSTRate = txtIGST.val();
-        BillingDTO.CGSTAmount = txtCGSTAmount.val();
-        BillingDTO.SGSTAmount = txtSGSTAmount.val();
-        BillingDTO.IGSTAmount = txtIGSTAmount.val();
-        BillingDTO.TotalAmount = txtTotalAmount.val();
-        BillingDTO.GrandTotal = txtGrandTotal.val();
-        BillingDTO.AdditionalCharges = txtAdditionalCharges.val();
-        BillingDTO.CustomerMobile = mobileNumber.val();
-        BillingDTO.PaymentMethod = PaymentMethod.val();
+        var uniqueIdentifier = $("#uniqueIdentifier");
+        billingDto.OverallDiscountRate = txtDiscountRate.val();
+        billingDto.OverallDiscountAmount = txtDiscountAmount.val();
+        billingDto.CGSTRate = txtCgst.val();
+        billingDto.SGSTRate = txtSGST.val();
+        billingDto.IGSTRate = txtIGST.val();
+        billingDto.CGSTAmount = txtCGSTAmount.val();
+        billingDto.SGSTAmount = txtSGSTAmount.val();
+        billingDto.IGSTAmount = txtIGSTAmount.val();
+        billingDto.TotalAmount = txtTotalAmount.val();
+        billingDto.GrandTotal = txtGrandTotal.val();
+        billingDto.AdditionalCharges = txtAdditionalCharges.val();
+        billingDto.CustomerMobile = mobileNumber.val();
+        billingDto.PaymentMethod = PaymentMethod.val();
+        billingDto.UniqueIdentifier = uniqueIdentifier.val();
 
         $("#tblProductToSell TBODY TR").each(function () {
             var row = $(this);
@@ -309,20 +317,36 @@
             return;
         }
 
-        BillingDTO.Products = products;
-        var req = JSON.stringify(BillingDTO);
+        billingDto.Products = products;
 
         //Send the JSON array to Controller using AJAX.
         $.ajax({
             type: "POST",
             url: "/Billing/Sell",
-            data: JSON.stringify(BillingDTO),
+            data: JSON.stringify(billingDto),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (r) {
                 window.open(r,
                     "Window2",
                     "status=no,height=350px,width=350px,resizable=yes,toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+            }
+        });
+    });
+
+    $("body").on("click", "#btnSave", function () {
+        var uniqueIdentifier = $("#uniqueIdentifier").val();
+        $.ajax({
+            type: "GET",
+            url: "/Billing/ConfirmBilling?uniqueIdentifier="+uniqueIdentifier,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                alert(r);
+                location.reload(true);
+            },
+            error: function (ex) {
+                alert("ConfirmBilling: Error!" + ex);
             }
         });
     });
@@ -368,7 +392,7 @@
         txtIGSTAmount.val(totalIGST);
         var TotalAmountAfterGST = (parseFloat(TotalAmountAfterDiscount) + parseFloat(totalCGST) + parseFloat(totalSGST) + parseFloat(totalIGST) + parseFloat(txtAdditionalCharges.val())).toFixed(2);
         var roundedOff = Math.round(TotalAmountAfterGST);
-        if ((roundedOff - TotalAmountAfterGST) != 0) {
+        if ((roundedOff - TotalAmountAfterGST) !== 0) {
             var lblRoundOff = $("#lblRoundOff");
             lblRoundOff.val("Rounded off: " + (roundedOff - TotalAmountAfterGST));
         }
@@ -429,7 +453,7 @@
         txtAmount.val(Amount);
         var totalItemDiscount = (txtAmount.val() * txtItemDiscountPercentage.val() / 100).toFixed(2);
         txtItemDiscountAmount.val(totalItemDiscount);
-        var itemTaxableValue = Amount - totalItemDiscount;
+        var itemTaxableValue = (Amount - totalItemDiscount).toFixed(2);
         txtTaxableValue.val(itemTaxableValue);
     }
 
