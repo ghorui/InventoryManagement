@@ -91,13 +91,11 @@ namespace InventoryApp.Controllers
                 
                 var barCodeValue = dto.BarCodeValue;
                 var dir = Server.MapPath("/Images/BarCode");
-                string tempFilePath = dir + "/temp.jpg";
                 string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + ".jpg";
                 string filePath = dir + "/" + fileName;
                 string relativePath = "/Images/BarCode/" + fileName;
                 BarcodeLib.Barcode b = new BarcodeLib.Barcode { IncludeLabel = true };
                 Image img = b.Encode(BarcodeLib.TYPE.CODE128, barCodeValue, Color.Black, Color.White, 290, 200);
-                img.Save(tempFilePath);
 
                 PointF companyLocation = new PointF(0f, 25f);
                 PointF firstLocation = new PointF(18f, 0f);
@@ -108,8 +106,7 @@ namespace InventoryApp.Controllers
                 string firstText = dto.Craft + " - INR:" + dto.Mrp.ToString(CultureInfo.InvariantCulture);
                 string companyString = "KAMALASAREE.COM";
 
-                Bitmap bitmap = (Bitmap)Image.FromFile(tempFilePath);//load the image file
-
+                Bitmap bitmap = (Bitmap)img;
                 Bitmap bigImage = new Bitmap(350, 200);
 
                 using (Graphics graphics = Graphics.FromImage(bigImage))
