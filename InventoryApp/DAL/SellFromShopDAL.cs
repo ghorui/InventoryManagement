@@ -240,10 +240,10 @@ namespace InventoryApp.DAL
             return paymentMethods;
         }
 
-        public static bool ConfirmBilling(string uniqueIdentifier)
+        public static string ConfirmBilling(string uniqueIdentifier)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            bool response = false;
+            string status = string.Empty;
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -252,17 +252,21 @@ namespace InventoryApp.DAL
                     string cmdText = DBConstants.usp_updateProductInfo;
                     SqlCommand sqlCommand = new SqlCommand(cmdText, connection) { CommandType = CommandType.StoredProcedure };
                     sqlCommand.Parameters.AddWithValue("@uniqueIdentifier", uniqueIdentifier);
-                    sqlCommand.ExecuteNonQuery();
-                    response = true;
+                    var reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        status = reader["Status"].ToString();
+                    }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                response = false;
+                status = "Error";
             }
 
-            return response;
+            return status;
         }
     }
 }

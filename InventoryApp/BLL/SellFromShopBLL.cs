@@ -51,7 +51,7 @@ namespace InventoryApp.BLL
             return SellFromShopDAL.GetPaymentMethods();
         }
 
-        public static bool ConfirmBilling(string uniqueIdentifier)
+        public static string ConfirmBilling(string uniqueIdentifier)
         {
             return SellFromShopDAL.ConfirmBilling(uniqueIdentifier);
         }

@@ -65,9 +65,8 @@ namespace InventoryApp.Controllers
 
         public JsonResult ConfirmBilling(string uniqueIdentifier)
         {
-            bool response = SellFromShopBLL.ConfirmBilling(uniqueIdentifier);
-            var message = response ? "Bill Saved Successfully" : "Billed save Failed!";
-            return Json(message, JsonRequestBehavior.AllowGet);
+            string response = SellFromShopBLL.ConfirmBilling(uniqueIdentifier);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
     }
 }
