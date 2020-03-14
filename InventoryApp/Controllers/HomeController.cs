@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using System.Web.Mvc;
 using InventoryApp.Models;
 
@@ -98,33 +99,38 @@ namespace InventoryApp.Controllers
                 Image img = b.Encode(BarcodeLib.TYPE.CODE128, barCodeValue, Color.Black, Color.White, 290, 200);
                 img.Save(tempFilePath);
 
-                PointF firstLocation = new PointF(0f, 0f);
-                PointF secondLocation = new PointF(270f, 0f);
+                PointF companyLocation = new PointF(0f, 25f);
+                PointF firstLocation = new PointF(18f, 0f);
+                PointF secondLocation = new PointF(320f, 0f);
+
                 StringFormat drawFormat = new StringFormat { FormatFlags = StringFormatFlags.DirectionVertical };
 
                 string firstText = dto.Craft + " - INR:" + dto.Mrp.ToString(CultureInfo.InvariantCulture);
+                string companyString = "KAMALASAREE.COM";
 
                 Bitmap bitmap = (Bitmap)Image.FromFile(tempFilePath);//load the image file
 
-                using (Graphics graphics = Graphics.FromImage(bitmap))
+                Bitmap bigImage = new Bitmap(350, 200);
+
+                using (Graphics graphics = Graphics.FromImage(bigImage))
                 {
+                    using (Font companyFont = new Font("Arial Black",10,FontStyle.Bold))
+                    {
+                        graphics.DrawString(companyString, companyFont, Brushes.Black, companyLocation, drawFormat);
+
+                    }
                     using (Font arialFont = new Font("Arial", 14))
                     {
+                        graphics.DrawImage(bitmap, new Point() {X = 35, Y = 0});
+                        graphics.DrawLine(Pens.Black, new PointF(19, 0), new PointF(19, 200));
                         graphics.DrawString(firstText, arialFont,
                             Brushes.Black, firstLocation, drawFormat);
                         graphics.DrawString("Vendor: " + dto.Vendor.ToString(CultureInfo.InvariantCulture), arialFont,
                             Brushes.Black, secondLocation, drawFormat);
                     }
-
-                    //using (Font arialFont = new Font("Arial", 8))
-                    //{
-                    //    firstLocation = new PointF(0f, 100f);
-                    //    graphics.DrawString(dto.Craft.ToString(CultureInfo.InvariantCulture), arialFont,
-                    //        Brushes.Crimson, firstLocation, drawFormat);
-                    //}
                 }
-                bitmap.Save(filePath);//save the image file
-                bitmap.Dispose();
+                bigImage.Save(filePath);//save the image file
+                bigImage.Dispose();
 
                 List<string> result = new List<string> {barCodeValue, relativePath};
                 Console.WriteLine($"Home/GetBarCode. result: {result}");
