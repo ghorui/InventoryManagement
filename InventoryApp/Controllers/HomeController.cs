@@ -22,7 +22,7 @@ namespace InventoryApp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = Server.MapPath("Images/BarCode");
 
             return View();
         }

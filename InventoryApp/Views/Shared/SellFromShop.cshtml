@@ -263,6 +263,7 @@
         "#btnPrint",
         function() {
             //Loop through the Table rows and build a JSON array.
+            var totalCount = 0;
             var billingDto = {};
             var products = new Array();
             var txtDiscountRate = $("#txtDiscountRate");
@@ -306,6 +307,7 @@
                 product.ItemDiscountAmount = row.find("TD").eq(6).html();
                 product.TaxableValue = row.find("TD").eq(7).html();
                 products.push(product);
+                totalCount += parseInt(product.Quantity);
             });
 
             if (products.length < 1) {
@@ -318,6 +320,7 @@
             }
 
             billingDto.Products = products;
+            billingDto.TotalCount = totalCount;
 
             //Send the JSON array to Controller using AJAX.
             $.ajax({

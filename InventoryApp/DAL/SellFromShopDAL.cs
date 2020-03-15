@@ -67,6 +67,7 @@ namespace InventoryApp.DAL
                     sqlCommand.Parameters.AddWithValue("@customerMobile", billingDto.CustomerMobile);
                     sqlCommand.Parameters.AddWithValue("@PaymentMethod", billingDto.PaymentMethod);
                     sqlCommand.Parameters.AddWithValue("@uniqueIdentifier", billingDto.UniqueIdentifier);
+                    sqlCommand.Parameters.AddWithValue("@totalCount", billingDto.TotalCount);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     if (sqlDataReader.Read())

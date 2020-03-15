@@ -28,6 +28,7 @@ namespace InventoryApp.Models.Shopping
         public string PaymentMethod { get; set; }
         public string Status { get; set; }
         public Guid UniqueIdentifier { get; set; }
+        public int TotalCount { get; set; }
 
         public static BillingDTO Create(IDataRecord record)
         {
@@ -95,6 +96,9 @@ namespace InventoryApp.Models.Shopping
                             break;
                         case "UniqueIdentifier":
                             result.UniqueIdentifier = Guid.Parse(record[propertyName].ToString());
+                            break;
+                        case "TotalCount":
+                            result.TotalCount = int.Parse(record[propertyName].ToString());
                             break;
                     }
                 }

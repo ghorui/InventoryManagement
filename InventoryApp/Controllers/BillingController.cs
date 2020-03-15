@@ -16,7 +16,6 @@ namespace InventoryApp.Controllers
         // GET: Billing
         public ActionResult Index(int transactionId)
         {
-            CustomerBillingDetails b;
             if (transactionId>0)
             {
                 var billingDto = SellFromShopBLL.GetBillingDetailsByTransationId(transactionId);
