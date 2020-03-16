@@ -1,0 +1,235 @@
+﻿@using System.Web.Mvc.Html
+@model InventoryApp.Models.BarCode.BarCodeInfo
+
+@{
+    ViewBag.Title = "PrintBarCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Print Bar Code</h2>
+
+<section style="background-color: blanchedalmond; color: black">
+    <div class="col-lg-12" style="background-color: blanchedalmond; color: black">
+        <div class="col-lg-6" style="background-color: blanchedalmond; color: black">
+            <table id="tblBarCode">
+                <tbody>
+                    <tr>
+                        <td>
+                            Department
+                        </td>
+                        <td>
+                            @Html.DropDownList("Department", Model.Depts, new { onchange = "CheckValue('#Department','#txtDept')" });
+                        </td>
+                        <td>
+                            <input type="text" id="txtDept" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Quality
+                        </td>
+                        <td>
+                            @Html.DropDownList("Quality", Model.Qualitys, new { onchange = "CheckValue('#Quality','#txtQuality')" })
+                        </td>
+                        <td>
+                            <input type="text" id="txtQuality" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Craft
+                        </td>
+                        <td>
+                            @Html.DropDownList("Craft", Model.Crafts, new { onchange = "CheckValue('#Craft','#txtCraft')" })
+                        </td>
+                        <td>
+                            <input type="text" id="txtCraft" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Size
+                        </td>
+                        <td>
+                            @Html.DropDownList("Size", Model.Sizes, new { onchange = "CheckValue('#Size','#txtSize')" })
+                        </td>
+                        <td>
+                            <input type="text" id="txtSize" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Vendor
+                        </td>
+                        <td>
+                            @Html.DropDownList("Vendor", Model.Vendors, new { onchange = "CheckValue('#Vendor','#txtVendor')" })
+                        </td>
+                        <td>
+                            <input type="text" id="txtVendor" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Actual Cost
+                        </td>
+                        <td>
+                            <input type="text" id="txtactualCostEntry" onblur="CheckTextBox('#txtactualCostEntry', '#txtactualCost')" />
+                        </td>
+                        <td>
+                            <input type="text" id="txtactualCost" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Selling Price
+                        </td>
+                        <td>
+                            <input type="text" id="txtSellPriceEntry" onblur="CheckTextBox('#txtSellPriceEntry', '#txtSellPrice')" />
+                        </td>
+                        <td>
+                            <input type="text" id="txtSellPrice" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            MRP
+                        </td>
+                        <td>
+                            <input type="text" id="txtMRPEntry" onblur="CheckTextBox('#txtMRPEntry', '#txtMRP')" />
+                        </td>
+                        <td>
+                            <input type="text" id="txtMRP" disabled="disabled" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+            <input type="button" value="Generate Token" id="btnGenerate" />
+            <input type="text" id="txtBarCode" disabled="disabled" />
+        </div>
+        <div class="col-lg-6" style="background-color: blanchedalmond; color: black">
+            <hr />
+            <div id="divBarCode">
+                <img alt="Bar Code" id="imgBarCode" style="height: 120px; width: 290px;" />
+                <input type="button" id="PrintBarCode" value="Print BarCode" />
+            </div>
+            <hr />
+            Number of Item you want to save
+            <div>
+                <input type="text" id="txtNumberOfProduct" />
+                <input type="button" id="btnNumberOfProduct" value="Save Product" />
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+
+    var FixInitial = function () {
+        $('#Department').trigger("change");
+        $('#Quality').trigger("change");
+        $('#Craft').trigger("change");
+        $('#Size').trigger("change");
+        $('#Vendor').trigger("change");
+        var divBarCode = $('#divBarCode');
+        divBarCode.css('visibility', 'hidden');
+
+    };
+
+    function CheckValue(source, item) {
+        var txtSource = $(source);
+        var txtItem = $(item);
+        var itemId = txtSource.val();
+        if (itemId === "0") {
+            txtItem.removeAttr("disabled");
+            txtItem.val("");
+        } else {
+            txtItem.val($(source).children("option:selected").text());
+            txtItem.attr("disabled", "disabled");
+        }
+
+    }
+
+    $("body").on("click",
+        "#btnGenerate",
+        function () {
+            var txtDept = $('#txtDept');
+            var txtQuality = $('#txtQuality');
+            var txtCraft = $('#txtCraft');
+            var txtSize = $('#txtSize');
+            var txtVendor = $('#txtVendor');
+            //var txtManuTime = $('#txtManuTime');
+            var txtactualCost = $('#txtactualCost');
+            var txtSellPrice = $('#txtSellPrice');
+            var txtMRP = $('#txtMRP');
+            var imgBarCode = $('#imgBarCode');
+
+            var txtBarCode = $('#txtBarCode');
+
+            var barCodeDTO = {};
+            barCodeDTO.Dept = txtDept.val();
+            barCodeDTO.Quality = txtQuality.val();
+            barCodeDTO.Craft = txtCraft.val();
+            barCodeDTO.Size = txtSize.val();
+            barCodeDTO.Vendor = txtVendor.val();
+            //barCodeDTO.ManufactureDate = txtManuTime.val();
+            barCodeDTO.ActualCost = txtactualCost.val();
+            barCodeDTO.SellingPrice = txtSellPrice.val();
+            barCodeDTO.Mrp = txtMRP.val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/GetBarCode",
+                data: JSON.stringify(barCodeDTO),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    txtBarCode.val(r[0]);
+                    var divBarCode = $('#divBarCode');
+                    divBarCode.css('visibility', 'visible');
+                    imgBarCode.attr("src", r[1]);
+                }
+            });
+
+        });
+
+    function CheckTextBox(source, item) {
+        var txtSource = $(source);
+        var txtItem = $(item);
+        txtItem.val(txtSource.val());
+    }
+
+    $("body").on("click",
+        "#PrintBarCode",
+        function () {
+            var imgBarCode = $('#imgBarCode');
+            var src = "";
+            src = imgBarCode.attr("src");
+            window.open(src, "Print Bar Code", "width=500, height=450");
+        });
+
+    $("body").on("click",
+        "#btnNumberOfProduct",
+        function () {
+            var txtBarCode = $('#txtBarCode');
+            var txtNumberOfProduct = $('#txtNumberOfProduct');
+
+            var product = {};
+            product.BarCode = txtBarCode.val();
+            product.Count = txtNumberOfProduct.val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/SaveProduct",
+                data: JSON.stringify(product),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    alert(r);
+                }
+            });
+        });
+
+    FixInitial();
+
+</script>

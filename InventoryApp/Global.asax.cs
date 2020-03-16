@@ -12,6 +12,7 @@ namespace InventoryApp
     {
         protected void Application_Start()
         {
+            Console.WriteLine("Global.asax called");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
