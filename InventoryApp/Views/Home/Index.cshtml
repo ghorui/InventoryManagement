@@ -33,6 +33,10 @@
                 @*<p><a class="btn btn-default" href="#" onclick="location.href = '@Url.Action("ShopInventory", "Dashboard")'">Shop dashboard &raquo;</a></p>*@
                 @*<p><a class="btn btn-default" href="#" onclick="location.href = '@Url.Action("StorageInventory", "Dashboard")'">Inventory &raquo;</a></p>*@
                 <p><input type="image" src="~/Images/button_inventory (1).png" alt="Inventory" onclick="location.href = '@Url.Action("StorageInventory", "Dashboard")'" /></p>
+                @if (User.IsInRole("Admin"))
+                {
+                    <p><input type="image" src="~/Images/button_edit-inventory.png" alt="Edit Inventory" onclick="location.href = '@Url.Action("EditInventory", "Dashboard")'"/></p>
+                }
             </div>
 
             @if (User.IsInRole("Admin") || User.IsInRole("Owner") || User.IsInRole("SalesAgent"))

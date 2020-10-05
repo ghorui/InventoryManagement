@@ -10,6 +10,7 @@ using System.IO;
 using System.Security;
 using System.Web.Mvc;
 using InventoryApp.Models;
+using InventoryApp.Util;
 
 namespace InventoryApp.Controllers
 {
@@ -17,6 +18,7 @@ namespace InventoryApp.Controllers
     {
         public ActionResult Index()
         {
+            Logger.Log(User.Identity.Name, "HomePage", "", "barCode", "Home Page");
             return View();
         }
 

@@ -20,5 +20,17 @@ namespace InventoryApp.BLL
             var dal = new DashboardDAL();
             return dal.GetAllProductsInTheInventory();
         }
+
+        public Product GetProductByBarcode(string barcode)
+        {
+            var dal = new DashboardDAL();
+            return dal.GetProductByBarcode(barcode);
+        }
+
+        public bool SaveProductByBarcode(Product product)
+        {
+            var dal = new DashboardDAL();
+            return dal.SaveProductByBarcode(product);
+        }
     }
 }

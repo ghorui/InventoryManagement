@@ -44,5 +44,43 @@ namespace InventoryApp.DAL
             }
             return result;
         }
+
+        public Product GetProductByBarcode(string barcode)
+        {
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Product result;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var cmdText = DBConstants.usp_getProductByBarCode;
+                var sqlCommand = new SqlCommand(cmdText, connection);
+                sqlCommand.Parameters.AddWithValue("@barCode", barcode);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                var sqlDataReader = sqlCommand.ExecuteReader();
+                var dataHelper = new DataHelper();
+                result = dataHelper.GetData(sqlDataReader, Product.Create).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public bool SaveProductByBarcode(Product product)
+        {
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var cmdText = DBConstants.usp_updateProductsDetailsByBarCode;
+                var sqlCommand = new SqlCommand(cmdText, connection);
+                sqlCommand.Parameters.AddWithValue("@barCode", product.BarCode);
+                sqlCommand.Parameters.AddWithValue("@quantity", product.Quantity);
+                sqlCommand.Parameters.AddWithValue("@unitPrice", product.UnitPrice);
+                sqlCommand.Parameters.AddWithValue("@itemName", product.ItemName);
+                sqlCommand.Parameters.AddWithValue("@vendor", product.Vendor);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.ExecuteNonQuery();
+            }
+            return true;
+        }
     }
 }

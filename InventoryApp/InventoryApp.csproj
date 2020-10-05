@@ -221,6 +221,7 @@
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Util\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\InventoryApp.dll" />
@@ -308,6 +309,7 @@
     <Content Include="Images\Backup\team-img3.jpg" />
     <Content Include="Images\Backup\team-img4.jpg" />
     <Content Include="Images\button_add.png" />
+    <Content Include="Images\button_edit-inventory.png" />
     <Content Include="Images\button_generate-token.png" />
     <Content Include="Images\button_get-customer-details.png" />
     <Content Include="Images\button_inventory %281%29.png" />
@@ -419,11 +421,11 @@
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\Home\Portfolio.cshtml" />
     <Content Include="Views\Home\PrintBarCode.cshtml" />
+    <Content Include="Views\Dashboard\EditInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\BarCode\" />
-    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

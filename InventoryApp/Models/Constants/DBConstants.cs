@@ -32,6 +32,9 @@ namespace InventoryApp.Models.Constants
         public static string usp_GetCustomerbytransactionId = "usp_GetCustomerbytransactionId";
         public static string usp_getPaymentMethods = "usp_getPaymentMethods";
         public static string usp_updateProductInfo = "usp_updateProductInfo";
+        public static string usp_getProductByBarCode = "usp_getProductByBarCode";
+        public static string usp_updateProductsDetailsByBarCode = "usp_updateProductsDetailsByBarCode";
+        public static string usp_AddLog = "usp_AddLog";
 
         #endregion Stored Proc
     }

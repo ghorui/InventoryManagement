@@ -7,7 +7,9 @@ using InventoryApp.BLL;
 using InventoryApp.Models;
 using InventoryApp.Models.BarCode;
 using InventoryApp.Models.Shopping;
+using InventoryApp.Util;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace InventoryApp.Controllers
 {
@@ -35,6 +37,8 @@ namespace InventoryApp.Controllers
                 res = SellFromShopBLL.SellProduct(billingDto);
             }
 
+            Logger.Log(User.Identity.Name, "Billing/Sell", billingDto.TransactionId.ToString(), "",
+                JsonConvert.SerializeObject(billingDto));
             return Json(Url.Action("Index", "Billing", new { transactionId = res }));
             //return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -65,6 +69,8 @@ namespace InventoryApp.Controllers
         public JsonResult ConfirmBilling(string uniqueIdentifier)
         {
             string response = SellFromShopBLL.ConfirmBilling(uniqueIdentifier);
+            Logger.Log(User.Identity.Name, "Billing/ConfirmBilling", response, "",
+                "UniqueIdentifier: " + uniqueIdentifier + ", Response:" + response);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
     }

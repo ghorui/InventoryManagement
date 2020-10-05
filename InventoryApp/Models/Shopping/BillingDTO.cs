@@ -83,7 +83,7 @@ namespace InventoryApp.Models.Shopping
                             result.LastUpdatedUser = record[propertyName].ToString();
                             break;
                         case "LastUpdateTime":
-                            result.LastUpdatedTime = record[propertyName].ToString();
+                            result.LastUpdatedTime = GetFormatedDate(record[propertyName].ToString());
                             break;
                         case "CustomerMobile":
                             result.CustomerMobile = record[propertyName].ToString();
@@ -105,6 +105,14 @@ namespace InventoryApp.Models.Shopping
             }
 
             return result;
+        }
+
+        private static string GetFormatedDate(string input)
+        {
+            DateTime dt;
+            DateTime.TryParse(input, out dt);
+
+            return dt.ToString("dd/MM/yyyy hh:mm tt");
         }
     }
 }

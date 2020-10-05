@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "EditInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Inventory</h2>
+
+<p>
+    <input type="text" placeholder="Enter Bar Code" name="barCode" onkeydown="" id="barCode" style="color: black" />
+    <input type="button" value="Search" id="btnSearch" style="color: black" />
+</p>
+
+<div id="showEdit">
+    <table border="2" style="background-color: aliceblue; color: black">
+        <thead>
+            <tr>
+                <td>Bar Code</td>
+                <td>Item Name</td>
+                <td>Quantity</td>
+                <td>Unit Price</td>
+                <td>Total Value</td>
+                <td>Vendor</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="txtBarCode" disabled="disabled" style="color: black"></td>
+                <td><input type="text" id="txtItemName" style="color: black" /></td>
+                <td><input type="text" id="txtQuantity" oninput="UpdateAmount()" style="color: black" /></td>
+                <td><input type="text" id="txtUnitPrice" oninput="UpdateAmount()" style="color: black" /></td>
+                <td><input type="text" id="txtTotalValue" style="color: black" disabled="disabled" /></td>
+                <td><input type="text" id="txtVendor" style="color: black" /></td>
+            </tr>
+        </tbody>
+        <tr>
+            <td colspan="4"></td>
+            <td colspan="2"><input type="button" value="Save" id="btnSave" /></td>
+        </tr>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    function UpdateAmount() {
+        var txtQuantity = $("#txtQuantity");
+        var txtUnitPrice = $("#txtUnitPrice");
+        var txtAmount = $("#txtTotalValue");
+        var amount = txtQuantity.val() * txtUnitPrice.val();
+        txtAmount.val(amount);
+    }
+
+    $("#barCode").bind('keydown', function (e) {
+        if (e.which === 13) { // return
+            $('#btnSearch').trigger('click');
+        }
+    });
+
+    $(document).on("click",
+        "#btnSave",
+        function(e) {
+            var product = new Object();
+            product.BarCode = $("#barCode").val();
+            product.ItemName = $('#txtItemName').val();
+            product.Vendor = $('#txtVendor').val();
+            product.Quantity = $("#txtQuantity").val();
+            product.UnitPrice = $("#txtUnitPrice").val();
+            debugger;
+            $.ajax({
+                url: "/Dashboard/SaveProductByBarcode",
+                type: "Post",
+                data: JSON.stringify(product),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json", 
+                success: function(result) {
+                    if (result === true) {
+                        alert("Product Saved!");
+                        $('#barCode').val("");
+                        $('#txtBarCode').val("");
+                        $('#txtItemName').val("");
+                        $('#txtQuantity').val("");
+                        $('#txtUnitPrice').val("");
+                        $('#txtTotalValue').val("");
+                        $('#txtVendor').val("");
+                    }
+                },
+                error: function() {
+
+                }
+            });
+        });
+
+    $(document).on("click",
+        "#btnSearch",
+        function (e) {
+            var data = $("#barCode").val();
+            debugger;
+            $.ajax({
+                url: "/Dashboard/SearchByBarcode?barcode=" + data,
+                type: window.GET,
+                success: function (result) {
+                    $('#txtBarCode').val(result.BarCode);
+                    $('#txtItemName').val(result.ItemName);
+                    $('#txtQuantity').val(result.Quantity);
+                    $('#txtUnitPrice').val(result.UnitPrice);
+                    $('#txtTotalValue').val(result.Value);
+                    $('#txtVendor').val(result.Vendor);
+                    UpdateAmount();
+                },
+                error: function () {
+
+                }
+            });
+        });
+</script>

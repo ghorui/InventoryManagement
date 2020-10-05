@@ -138,7 +138,7 @@
 <hr />
 <div align="right">
     <input type="image" src="~/Images/button_print.png" alt="Print" id="btnPrint"/> &nbsp;
-    <input type="image" alt="Save Billing Details" id="btnSave" src="~/Images/button_save-all.png" />
+    <input type="image" alt="Save Billing Details" id="btnSave" src="~/Images/button_save-all.png" style="display: none" />
 </div>
 <div>
     <input id="uniqueIdentifier" type="text" value="@Model.UniqueIdentifier" style="visibility: hidden" disabled="disabled" />
@@ -174,6 +174,7 @@
     $("body").on("click",
         "#btnAdd",
         function () {
+            $("#btnSave").hide();
             var txtBarCode = $("#txtBarCode");
             var txtItemName = $("#txtItemName");
             var txtQuantity = $("#txtQuantity");
@@ -329,7 +330,8 @@
                 data: JSON.stringify(billingDto),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function(r) {
+                success: function (r) {
+                    $("#btnSave").show();
                     window.open(r,
                         "Window2",
                         "status=no,height=350px,width=350px,resizable=yes,toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
@@ -412,6 +414,7 @@
     }
 
     function Remove(button) {
+        $("#btnSave").hide();
         //Determine the reference of the Row using the Button.
         var row = $(button).closest("TR");
         var name = $("TD", row).eq(0).html();
